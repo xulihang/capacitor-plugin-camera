@@ -17,17 +17,19 @@ export interface CameraPreviewPlugin {
   setDefaultUIElementURL(url:string): Promise<void>;
   startCamera(): Promise<void>;
   stopCamera(): Promise<void>;
-  pauseCamera(): Promise<void>;
-  resumeCamera(): Promise<void>;
   /**
   * take a snapshot as base64.
   */
   takeSnapshot(options:{quality?:number}): Promise<{base64:string}>;
   /**
+  * save a frame internally. Android and iOS only.
+  */
+  saveFrame(): Promise<{success:boolean}>;
+  /**
   * take a snapshot as DCEFrame. Web Only
   */
   takeSnapshot2(): Promise<{frame:DCEFrame}>;
-  takePhoto(): Promise<{base64:string}>;
+  takePhoto(options: {includeBase64?: boolean}): Promise<{path?:string,base64?:string}>;
   toggleTorch(options: {on: boolean}): Promise<void>;
   requestCameraPermission(): Promise<void>;
   isOpen():Promise<{isOpen:boolean}>;

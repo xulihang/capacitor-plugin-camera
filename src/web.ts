@@ -10,6 +10,10 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     CameraEnhancer.defaultUIElementURL = url;
   }
 
+  saveFrame(): Promise<{ success: boolean; }> {
+    throw new Error('Method not implemented.');
+  }
+
   async initialize(): Promise<void> {
     this.camera = await CameraEnhancer.createInstance();
     this.camera.on("played", (playCallBackInfo:PlayCallbackInfo) => {
@@ -29,7 +33,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       let resolution:string = rsl[0] + "x" + rsl[1];
       return {resolution: resolution};
     }else{
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -57,7 +61,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       await this.camera.setResolution(width,height);
       return;
     } else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -70,7 +74,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       });
       return {cameras:labels};
     }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -79,7 +83,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       let cameraInfo = this.camera.getSelectedCamera();
       return {selectedCamera:cameraInfo.label};
     }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -94,7 +98,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
         }
       }
     }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -108,7 +112,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
         regionMeasuredByPercentage: options.region.measuredByPercentage
       })
     }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -117,7 +121,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       await this.camera.setZoom(options.factor);
       return;
     }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -143,7 +147,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     if (this.camera) {
       await this.camera.open(true);
     }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -151,23 +155,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     if (this.camera) {
       this.camera.close(true);
     }else {
-      throw new Error('DCE not initialized');
-    }
-  }
-
-  async pauseCamera(): Promise<void> {
-    if (this.camera) {
-      this.camera.pause();
-    }else {
-      throw new Error('DCE not initialized');
-    }
-  }
-
-  async resumeCamera(): Promise<void> {
-    if (this.camera) {
-      this.camera.resume();
-    }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -175,7 +163,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     if (this.camera) {
       return {isOpen:this.camera.isOpen()};
     }else{
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -189,7 +177,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       let base64 = dataURL.replace("data:image/jpeg;base64,","");
       return {base64:base64};
     }else{
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
@@ -198,16 +186,16 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       let frame = this.camera.getFrame();
       return {frame:frame};
     }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 
-  async takePhoto(): Promise<{ base64: string; }> {
+  async takePhoto(_options:{includeBase64?:boolean}): Promise<{ path?:string, base64?: string; }> {
     if (this.camera) {
       let dataURL = this.camera.getFrame().toCanvas().toDataURL();
       return {base64:dataURL};
     }else {
-      throw new Error('DCE not initialized');
+      throw new Error('Camera not initialized');
     }
   }
 

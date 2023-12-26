@@ -25,11 +25,9 @@ npx cap sync
 * [`setDefaultUIElementURL(...)`](#setdefaultuielementurl)
 * [`startCamera()`](#startcamera)
 * [`stopCamera()`](#stopcamera)
-* [`pauseCamera()`](#pausecamera)
-* [`resumeCamera()`](#resumecamera)
 * [`takeSnapshot(...)`](#takesnapshot)
 * [`takeSnapshot2()`](#takesnapshot2)
-* [`takePhoto()`](#takephoto)
+* [`takePhoto(...)`](#takephoto)
 * [`toggleTorch(...)`](#toggletorch)
 * [`requestCameraPermission()`](#requestcamerapermission)
 * [`isOpen()`](#isopen)
@@ -183,24 +181,6 @@ stopCamera() => Promise<void>
 --------------------
 
 
-### pauseCamera()
-
-```typescript
-pauseCamera() => Promise<void>
-```
-
---------------------
-
-
-### resumeCamera()
-
-```typescript
-resumeCamera() => Promise<void>
-```
-
---------------------
-
-
 ### takeSnapshot(...)
 
 ```typescript
@@ -231,13 +211,17 @@ take a snapshot as <a href="#dceframe">DCEFrame</a>. Web Only
 --------------------
 
 
-### takePhoto()
+### takePhoto(...)
 
 ```typescript
-takePhoto() => Promise<{ base64: string; }>
+takePhoto(options: { includeBase64?: boolean; }) => Promise<{ path?: string; base64?: string; }>
 ```
 
-**Returns:** <code>Promise&lt;{ base64: string; }&gt;</code>
+| Param         | Type                                      |
+| ------------- | ----------------------------------------- |
+| **`options`** | <code>{ includeBase64?: boolean; }</code> |
+
+**Returns:** <code>Promise&lt;{ path?: string; base64?: string; }&gt;</code>
 
 --------------------
 
