@@ -12,6 +12,16 @@
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
   <style>
+     view-finder {
+      top:0;
+      top:env(safe-area-inset-top);
+      right:0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      position:absolute;
+    }
+
     #toggleTorchButton {
       bottom: 0;
       left: 0;
@@ -91,12 +101,6 @@
     <view-finder 
       style="--scan-line-color:orange;
             --scan-rect-color:orange;"
-      width="1280"
-      height="720"
-      left="0"
-      right="1280"
-      top="0"
-      bottom="720"
       preserve-aspect-ratio="xMidYMid slice">
     </view-finder>
     <select id="cameraSelect"></select>

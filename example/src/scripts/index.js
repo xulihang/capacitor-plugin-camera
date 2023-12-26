@@ -44,6 +44,8 @@ async function initialize(){
 }
 
 async function updateViewfinder(res){
+  console.log(res);
+  console.log("update view finder");
   let width = res.split("x")[0];
   let height = res.split("x")[1];
   if (Capacitor.getPlatform() === "android") {
