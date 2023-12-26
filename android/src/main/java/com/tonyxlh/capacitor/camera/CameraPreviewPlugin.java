@@ -2,7 +2,6 @@ package com.tonyxlh.capacitor.camera;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -53,7 +52,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -557,4 +555,16 @@ public class CameraPreviewPlugin extends Plugin {
             call.reject("Permission not granted.");
         }
     }
+    @PluginMethod
+    public void getOrientation(PluginCall call) {
+        int orientation = getContext().getResources().getConfiguration().orientation;
+        JSObject result = new JSObject();
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            result.put("orientation","PORTRAIT");
+        }else{
+            result.put("orientation","LANDSCAPE");
+        }
+        call.resolve(result);
+    }
+
 }

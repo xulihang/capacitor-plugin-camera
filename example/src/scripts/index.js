@@ -1,6 +1,6 @@
 import '../styles/index.scss';
 import { CameraPreview } from "capacitor-plugin-camera";
-
+import { Capacitor } from '@capacitor/core';
 
 console.log('webpack starterkit');
 
@@ -43,9 +43,16 @@ async function initialize(){
   startBtn.disabled = "";
 }
 
-function updateViewfinder(res){
-  let width = res.split("x")[1];
-  let height = res.split("x")[0];
+async function updateViewfinder(res){
+  let width = res.split("x")[0];
+  let height = res.split("x")[1];
+  if (Capacitor.getPlatform() === "android") {
+    let orientation = (await CameraPreview.getOrientation()).orientation;
+    if (orientation === "PORTRAIT") {
+      width = res.split("x")[1];
+      height = res.split("x")[0];
+    }
+  }
   let viewFinder = document.querySelector("view-finder");
   viewFinder.width = width;
   viewFinder.height = height;

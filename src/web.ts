@@ -14,6 +14,10 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     throw new Error('Method not implemented.');
   }
 
+  getOrientation(): Promise<{"orientation":"PORTRAIT"|"LANDSCAPE"}> {
+    throw new Error('Method not implemented.');
+  }
+
   async initialize(): Promise<void> {
     this.camera = await CameraEnhancer.createInstance();
     this.camera.on("played", (playCallBackInfo:PlayCallbackInfo) => {

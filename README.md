@@ -30,6 +30,7 @@ npx cap sync
 * [`takeSnapshot2()`](#takesnapshot2)
 * [`takePhoto(...)`](#takephoto)
 * [`toggleTorch(...)`](#toggletorch)
+* [`getOrientation()`](#getorientation)
 * [`requestCameraPermission()`](#requestcamerapermission)
 * [`isOpen()`](#isopen)
 * [`addListener('onPlayed', ...)`](#addlisteneronplayed)
@@ -249,6 +250,19 @@ toggleTorch(options: { on: boolean; }) => Promise<void>
 | Param         | Type                          |
 | ------------- | ----------------------------- |
 | **`options`** | <code>{ on: boolean; }</code> |
+
+--------------------
+
+
+### getOrientation()
+
+```typescript
+getOrientation() => Promise<{ "orientation": "PORTRAIT" | "LANDSCAPE"; }>
+```
+
+get the orientation of the device. Android.
+
+**Returns:** <code>Promise&lt;{ orientation: 'PORTRAIT' | 'LANDSCAPE'; }&gt;</code>
 
 --------------------
 

@@ -31,6 +31,10 @@ export interface CameraPreviewPlugin {
   takeSnapshot2(): Promise<{frame:DCEFrame}>;
   takePhoto(options: {includeBase64?: boolean}): Promise<{path?:string,base64?:string}>;
   toggleTorch(options: {on: boolean}): Promise<void>;
+  /**
+  * get the orientation of the device. Android.
+  */
+  getOrientation(): Promise<{"orientation":"PORTRAIT"|"LANDSCAPE"}>;
   requestCameraPermission(): Promise<void>;
   isOpen():Promise<{isOpen:boolean}>;
   addListener(
