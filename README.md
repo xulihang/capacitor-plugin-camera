@@ -26,6 +26,7 @@ npx cap sync
 * [`startCamera()`](#startcamera)
 * [`stopCamera()`](#stopcamera)
 * [`takeSnapshot(...)`](#takesnapshot)
+* [`saveFrame()`](#saveframe)
 * [`takeSnapshot2()`](#takesnapshot2)
 * [`takePhoto(...)`](#takephoto)
 * [`toggleTorch(...)`](#toggletorch)
@@ -194,6 +195,19 @@ take a snapshot as base64.
 | **`options`** | <code>{ quality?: number; }</code> |
 
 **Returns:** <code>Promise&lt;{ base64: string; }&gt;</code>
+
+--------------------
+
+
+### saveFrame()
+
+```typescript
+saveFrame() => Promise<{ success: boolean; }>
+```
+
+save a frame internally. Android and iOS only.
+
+**Returns:** <code>Promise&lt;{ success: boolean; }&gt;</code>
 
 --------------------
 

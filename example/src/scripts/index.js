@@ -32,6 +32,7 @@ async function initialize(){
     console.log(res);
     updateResolutionSelect(res.resolution);
     updateCameraSelect();
+    updateViewfinder(res.resolution);
   });
   
   await CameraPreview.requestCameraPermission();
@@ -40,6 +41,18 @@ async function initialize(){
   loadResolutions();
   startBtn.innerText = "Start Camera";
   startBtn.disabled = "";
+}
+
+function updateViewfinder(res){
+  let width = res.split("x")[1];
+  let height = res.split("x")[0];
+  let viewFinder = document.querySelector("view-finder");
+  viewFinder.width = width;
+  viewFinder.height = height;
+  viewFinder.left = width * 0.1;
+  viewFinder.top = height * 0.2;
+  viewFinder.right = width * 0.9;
+  viewFinder.bottom = height * 0.6;
 }
 
 async function startCamera(){
