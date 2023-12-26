@@ -22,6 +22,14 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     this.camera = await CameraEnhancer.createInstance();
     this.camera.on("played", (playCallBackInfo:PlayCallbackInfo) => {
       this.notifyListeners("onPlayed", {resolution:playCallBackInfo.width+"x"+playCallBackInfo.height});
+      try {
+        let canvas = this.camera!.getUIElement().getElementsByClassName("dce-video-container")[0].getElementsByTagName("canvas")[0];
+        if (canvas) {
+          canvas.remove();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     });
     await this.camera.setUIElement(CameraEnhancer.defaultUIElementURL);
 
