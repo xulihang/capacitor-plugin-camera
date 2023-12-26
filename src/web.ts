@@ -20,6 +20,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
 
   async initialize(): Promise<void> {
     this.camera = await CameraEnhancer.createInstance();
+    this.camera.setVideoFit("cover");
     this.camera.on("played", (playCallBackInfo:PlayCallbackInfo) => {
       this.notifyListeners("onPlayed", {resolution:playCallBackInfo.width+"x"+playCallBackInfo.height});
       try {
