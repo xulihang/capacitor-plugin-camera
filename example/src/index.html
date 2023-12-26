@@ -62,6 +62,15 @@
       position:absolute;
     }
 
+    #takePhotoButton {
+      top:20px;
+      top:calc(env(safe-area-inset-top) + 20px);
+      right:0;
+      height: 20px;
+      z-index: 999;
+      position:absolute;
+    }
+
     #captured {
       max-width: 100%;
     }
@@ -78,6 +87,7 @@
     <select id="cameraSelect"></select>
     <select id="resolutionSelect"></select>
     <button id="captureButton" type="button">Capture</button>
+    <button id="takePhotoButton" type="button">Take Photo</button>
     <button id="zoominButton" type="button">+</button>
     <button id="zoomoutButton" type="button">-</button>
     <button id="toggleTorchButton" type="button">Toggle Torch</button>

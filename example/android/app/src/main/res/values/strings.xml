@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Camera</string>
+    <string name="title_activity_main">Camera</string>
+    <string name="package_name">com.tonyxlh.example.camera</string>
+    <string name="custom_url_scheme">com.tonyxlh.example.camera</string>
+</resources>

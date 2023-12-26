@@ -6,12 +6,14 @@ console.log('webpack starterkit');
 
 let onPlayedListener;
 let captureBtn = document.getElementById("captureButton");
+let takePhotoButton = document.getElementById("takePhotoButton");
 let zoominBtn = document.getElementById("zoominButton");
 let zoomoutBtn = document.getElementById("zoomoutButton");
 let startBtn = document.getElementById("startBtn");
 let toggleTorchBtn = document.getElementById("toggleTorchButton");
 startBtn.addEventListener("click",startCamera);
 captureBtn.addEventListener("click",captureAndClose);
+takePhotoButton.addEventListener("click",takePhotoAndClose);
 zoominBtn.addEventListener("click",zoomin);
 zoomoutBtn.addEventListener("click",zoomout);
 toggleTorchBtn.addEventListener("click",toggleTorch);
@@ -33,6 +35,9 @@ async function initialize(){
   });
   
   await CameraPreview.requestCameraPermission();
+  await CameraPreview.setScanRegion({region:{top:20,left:10,right:90,bottom:60,measuredByPercentage:1}});
+  await loadCameras();
+  loadResolutions();
   startBtn.innerText = "Start Camera";
   startBtn.disabled = "";
 }
@@ -54,6 +59,14 @@ function toggleControlsDisplay(show){
 
 async function captureAndClose(){
   let result = await CameraPreview.takeSnapshot({quality:85});
+  let base64 = result.base64;
+  document.getElementById("captured").src = "data:image/jpeg;base64," + base64;
+  await CameraPreview.stopCamera();
+  toggleControlsDisplay(false);
+}
+
+async function takePhotoAndClose(){
+  let result = await CameraPreview.takePhoto({includeBase64:true});
   let base64 = result.base64;
   document.getElementById("captured").src = "data:image/jpeg;base64," + base64;
   await CameraPreview.stopCamera();
