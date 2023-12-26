@@ -1,4 +1,4 @@
-package com.xulihang.camera;
+package com.tonyxlh.capacitor.camera;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;

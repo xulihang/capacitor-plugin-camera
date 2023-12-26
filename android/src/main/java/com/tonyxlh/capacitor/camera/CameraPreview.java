@@ -1,4 +1,4 @@
-package com.xulihang.camera;
+package com.tonyxlh.capacitor.camera;
 
 import android.util.Log;
 
