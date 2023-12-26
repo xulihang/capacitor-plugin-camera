@@ -2,13 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>webpack starterkit</title>
   <meta name="description" content="A light foundation for your next frontend project based on webpack.">
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+  <style>
+    #toggleTorchButton {
+      bottom: 0;
+      left: 0;
+      height: 20px;
+      position: absolute;
+      font-family:monospace;
+      z-index: 999;
+    }
+
+    #zoominButton {
+      bottom: 20px;
+      right: 0;
+      height: 20px;
+      position: absolute;
+      font-family:monospace;
+      z-index: 999;
+    }
+
+    #zoomoutButton {
+      bottom: 0;
+      right: 0;
+      height: 20px;
+      position: absolute;
+      font-family:monospace;
+      z-index: 999;
+    }
+      
+    #cameraSelect {
+      top:0;
+      top:env(safe-area-inset-top);
+      left:0;
+      height: 20px;
+      z-index: 999;
+      position:absolute;
+    }
+
+    #resolutionSelect {
+      top:20px;
+      top:calc(env(safe-area-inset-top) + 20px);
+      left:0;
+      height: 20px;
+      z-index: 999;
+      position:absolute;
+    }
+
+    #captureButton {
+      top:0;
+      top:env(safe-area-inset-top);
+      right:0;
+      height: 20px;
+      z-index: 999;
+      position:absolute;
+    }
+
+    #captured {
+      max-width: 100%;
+    }
+  </style>
 </head>
 <body>
-  <img src="images/webpack.png" alt="Webpack logo">
-  <h1>webpack starter</h1>
-  <p>✨ A lightweight foundation for your next webpack based frontend project.</p>
+  <div class="home">
+    <button id="startBtn" disabled>Start Camera</button>
+    <p>Dynamsoft Barcode Reader is going to read barcodes from the camera preview.</p>
+    <img id="captured"/>
+    <ol id="barcodeResults"/>
+  </div>
+  <div class="controls" style="display:none;">
+    <select id="cameraSelect"></select>
+    <select id="resolutionSelect"></select>
+    <button id="captureButton" type="button">Capture</button>
+    <button id="zoominButton" type="button">+</button>
+    <button id="zoomoutButton" type="button">-</button>
+    <button id="toggleTorchButton" type="button">Toggle Torch</button>
+  </div>
 </body>
 </html>

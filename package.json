@@ -74,5 +74,8 @@
     "android": {
       "src": "android"
     }
+  },
+  "dependencies": {
+    "dynamsoft-camera-enhancer": "^3.1.0"
   }
 }
