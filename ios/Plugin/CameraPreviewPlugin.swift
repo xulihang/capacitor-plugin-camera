@@ -256,6 +256,16 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
         call.resolve(ret)
     }
     
+    @objc func getOrientation(_ call: CAPPluginCall) {
+        var ret = PluginCallResultData()
+        if UIDevice.current.orientation.isPortrait {
+            ret["orientation"] = "PORTRAIT"
+        }else{
+            ret["orientation"] = "LANDSCAPE"
+        }
+        call.resolve(ret)
+    }
+    
     @objc func selectCamera(_ call: CAPPluginCall) {
         let isRunning = self.captureSession.isRunning
         if isRunning {
