@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import Capacitor
 import AVFoundation
 
@@ -23,12 +24,20 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
     var scanRegion:ScanRegion! = nil
     @objc func initialize(_ call: CAPPluginCall) {
         // Initialize a camera view for previewing video.
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
         DispatchQueue.main.sync {
             self.previewView = PreviewView.init(frame: (bridge?.viewController?.view.bounds)!)
             self.webView!.superview!.insertSubview(self.previewView, belowSubview: self.webView!)
             initializeCaptureSession()
         }
         call.resolve()
+    }
+    
+    @objc func rotated() {
+        let bounds = self.webView?.bounds
+        if bounds != nil {
+            self.previewView.frame = bounds!
+        }
     }
     
     @objc func startCamera(_ call: CAPPluginCall) {
@@ -59,6 +68,7 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
             if self.captureSession.canAddInput(videoInput) {
                 self.captureSession.addInput(videoInput)
                 self.previewView.videoPreviewLayer.session = self.captureSession
+                self.previewView.videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
                 
                 self.videoOutput = AVCaptureVideoDataOutput.init()
                 if self.captureSession.canAddOutput(self.videoOutput) {
@@ -444,4 +454,5 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
         takePhotoCall = call
         takePhotoWithAVFoundation()
     }
+    
 }
