@@ -17,6 +17,9 @@ takePhotoButton.addEventListener("click",takePhotoAndClose);
 zoominBtn.addEventListener("click",zoomin);
 zoomoutBtn.addEventListener("click",zoomout);
 toggleTorchBtn.addEventListener("click",toggleTorch);
+document.getElementsByClassName("overlay")[0].addEventListener("click",function(e){
+  displayFocusHint(e);
+})
 
 let torchStatus = false;
 
@@ -33,6 +36,7 @@ async function initialize(){
     updateResolutionSelect(res.resolution);
     updateCameraSelect();
     updateViewfinder(res.resolution);
+    updateOverlay(res.resolution);
   });
   
   await CameraPreview.requestCameraPermission();
@@ -48,7 +52,7 @@ async function updateViewfinder(res){
   console.log("update view finder");
   let width = res.split("x")[0];
   let height = res.split("x")[1];
-  if (Capacitor.getPlatform() === "android") {
+  if (Capacitor.isNativePlatform()) {
     let orientation = (await CameraPreview.getOrientation()).orientation;
     if (orientation === "PORTRAIT") {
       width = res.split("x")[1];
@@ -62,6 +66,20 @@ async function updateViewfinder(res){
   viewFinder.top = height * 0.2;
   viewFinder.right = width * 0.9;
   viewFinder.bottom = height * 0.6;
+}
+
+async function updateOverlay(res){
+  let width = res.split("x")[0];
+  let height = res.split("x")[1];
+  if (Capacitor.isNativePlatform()) {
+    let orientation = (await CameraPreview.getOrientation()).orientation;
+    if (orientation === "PORTRAIT") {
+      width = res.split("x")[1];
+      height = res.split("x")[0];
+    }
+  }
+  let overlay = document.getElementsByClassName("overlay")[0];
+  overlay.setAttribute("viewBox","0 0 "+width+" "+height);
 }
 
 async function startCamera(){
@@ -169,4 +187,76 @@ async function toggleTorch(){
   }
 }
 
+function displayFocusHint(e){
+  clearFocusHint();
+  
+  let overlay = document.getElementsByClassName("overlay")[0];
+  let coord = getMousePosition(e,document.getElementsByClassName("overlay")[0]);
+  let svgX = coord.x;
+  let svgY = coord.y;
+  let polygon = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+  let lr = {};
+  let padding = 25;
+  lr.x1 = svgX - padding;
+  lr.y1 = svgY - padding;
+  lr.x2 = svgX + padding;
+  lr.y2 = svgY - padding;
+  lr.x3 = svgX + padding;
+  lr.y3 = svgY + padding;
+  lr.x4 = svgX - padding;
+  lr.y4 = svgY + padding;
+  polygon.setAttribute("points",getPointsData(lr));
+  polygon.setAttribute("class","focus-polygon");
+  overlay.append(polygon);
 
+  let viewBox = overlay.getAttribute("viewBox");
+  let frameWidth = viewBox.split(" ")[2];
+  let frameHeight = viewBox.split(" ")[3];
+  let x = e.clientX/document.getElementsByClassName("overlay")[0].clientWidth;
+  let y = e.clientY/document.getElementsByClassName("overlay")[0].clientHeight;
+  x = parseInt(x*frameWidth);
+  y = parseInt(y*frameHeight);
+  console.log(x);
+  console.log(y);
+  CameraPreview.setFocus({x: x, y: y})
+  setTimeout(clearFocusHint, 2000)
+}
+
+function getPointsData(lr){
+  let pointsData = lr.x1+","+lr.y1 + " ";
+  pointsData = pointsData+ lr.x2+","+lr.y2 + " ";
+  pointsData = pointsData+ lr.x3+","+lr.y3 + " ";
+  pointsData = pointsData+ lr.x4+","+lr.y4;
+  return pointsData;
+}
+
+function clearFocusHint(){
+  let overlay = document.getElementsByClassName("overlay")[0];
+  clearElements(overlay,"polygon");
+}
+
+function clearElements(parent, tagName){
+  let elements = parent.getElementsByTagName(tagName);
+  for (let index = elements.length - 1; index >= 0; index--) {
+    const element = elements[index];
+    element.remove();
+  }
+}
+
+ //Convert the screen coordinates to the SVG's coordinates from https://www.petercollingridge.co.uk/tutorials/svg/interactive/dragging/
+ function getMousePosition(e,svg) {
+  let CTM = svg.getScreenCTM();
+  if (e.targetTouches) { //if it is a touch event
+    let x = e.targetTouches[0].clientX;
+    let y = e.targetTouches[0].clientY;
+    return {
+      x: (x - CTM.e) / CTM.a,
+      y: (y - CTM.f) / CTM.d
+    };
+  }else{
+    return {
+      x: (e.clientX - CTM.e) / CTM.a,
+      y: (e.clientY - CTM.f) / CTM.d
+    };
+  }
+}

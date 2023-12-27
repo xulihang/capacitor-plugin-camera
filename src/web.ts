@@ -138,7 +138,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     }
   }
 
-  async setFocus(): Promise<void> {
+  async setFocus(_options: {x: number, y: number}): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
