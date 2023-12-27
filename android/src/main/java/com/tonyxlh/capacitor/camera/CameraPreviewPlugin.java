@@ -534,6 +534,14 @@ public class CameraPreviewPlugin extends Plugin {
         super.handleOnResume();
     }
 
+    @Override
+    protected void handleOnConfigurationChanged(Configuration newConfig) {
+        notifyListeners("onOrientationChanged",null);
+        super.handleOnConfigurationChanged(newConfig);
+    }
+
+
+
     @PluginMethod
     public void requestCameraPermission(PluginCall call) {
         boolean hasCameraPerms = getPermissionState(CAMERA) == PermissionState.GRANTED;
