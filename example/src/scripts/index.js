@@ -5,6 +5,7 @@ import { Capacitor } from '@capacitor/core';
 console.log('webpack starterkit');
 
 let onPlayedListener;
+let onOrientationChangedListener;
 let captureBtn = document.getElementById("captureButton");
 let takePhotoButton = document.getElementById("takePhotoButton");
 let zoominBtn = document.getElementById("zoominButton");
@@ -31,14 +32,23 @@ async function initialize(){
   if (onPlayedListener) {
     await onPlayedListener.remove();
   }
+  if (onOrientationChangedListener) {
+    await onOrientationChangedListener.remove();
+  }
   onPlayedListener = await CameraPreview.addListener('onPlayed', async (res) => {
+    console.log("onPlayed");
     console.log(res);
     updateResolutionSelect(res.resolution);
     updateCameraSelect();
     updateViewfinder(res.resolution);
     updateOverlay(res.resolution);
   });
-  
+  onOrientationChangedListener = await CameraPreview.addListener('onOrientationChanged',async () => {
+    console.log("onOrientationChanged");
+    let res = await CameraPreview.getResolution();
+    updateViewfinder(res.resolution);
+    updateOverlay(res.resolution);
+  });
   await CameraPreview.requestCameraPermission();
   await CameraPreview.setScanRegion({region:{top:20,left:10,right:90,bottom:60,measuredByPercentage:1}});
   await loadCameras();

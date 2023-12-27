@@ -34,6 +34,7 @@ npx cap sync
 * [`requestCameraPermission()`](#requestcamerapermission)
 * [`isOpen()`](#isopen)
 * [`addListener('onPlayed', ...)`](#addlisteneronplayed)
+* [`addListener('onOrientationChanged', ...)`](#addlisteneronorientationchanged)
 * [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
@@ -303,6 +304,22 @@ addListener(eventName: 'onPlayed', listenerFunc: onPlayedListener) => Promise<Pl
 --------------------
 
 
+### addListener('onOrientationChanged', ...)
+
+```typescript
+addListener(eventName: 'onOrientationChanged', listenerFunc: onOrientationChangedListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+```
+
+| Param              | Type                                                                                  |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'onOrientationChanged'</code>                                                   |
+| **`listenerFunc`** | <code><a href="#onorientationchangedlistener">onOrientationChangedListener</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+
+--------------------
+
+
 ### removeAllListeners()
 
 ```typescript
@@ -454,5 +471,10 @@ buffer as needed.
 #### onPlayedListener
 
 <code>(result: { resolution: string; }): void</code>
+
+
+#### onOrientationChangedListener
+
+<code>(): void</code>
 
 </docgen-api>

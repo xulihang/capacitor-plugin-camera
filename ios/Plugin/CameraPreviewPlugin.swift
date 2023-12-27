@@ -44,8 +44,8 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
             }else if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
                 self.previewView.videoPreviewLayer.connection?.videoOrientation = .landscapeLeft
             }
-            
         }
+        notifyListeners("onOrientationChanged",data: nil)
     }
     
     @objc func startCamera(_ call: CAPPluginCall) {

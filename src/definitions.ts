@@ -41,10 +41,15 @@ export interface CameraPreviewPlugin {
     eventName: 'onPlayed',
     listenerFunc: onPlayedListener,
   ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  addListener(
+    eventName: 'onOrientationChanged',
+    listenerFunc: onOrientationChangedListener,
+  ): Promise<PluginListenerHandle> & PluginListenerHandle;
   removeAllListeners(): Promise<void>;
 }
 
 export type onPlayedListener = (result:{resolution:string}) => void;
+export type onOrientationChangedListener = () => void;
 
 /**
  * measuredByPercentage: 0 in pixel, 1 in percent
