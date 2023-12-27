@@ -1,6 +1,12 @@
 # capacitor-plugin-camera
 
-A capacitor camera plugin
+A capacitor camera plugin.
+
+## Supported Platforms
+
+* Android (based on CameraX)
+* iOS (based on AVCaptureSession)
+* Web (based on getUserMedia with Dynamsoft Camera Enhancer)
 
 ## Install
 
