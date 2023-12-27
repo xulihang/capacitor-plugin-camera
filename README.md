@@ -14,6 +14,28 @@ A capacitor camera plugin.
 npm install capacitor-plugin-camera
 npx cap sync
 ```
+## Get Bitmap/UIImage via Reflection
+
+If you are developing a plugin, you can use reflection to get the camera frames as Bitmap or UIImage on the native side.
+
+Java:
+
+```java
+Class cls = Class.forName("com.tonyxlh.capacitor.camera.CameraPreviewPlugin");
+Method m = cls.getMethod("getBitmap",null);
+Bitmap bitmap = (Bitmap) m.invoke(null, null);
+```
+
+Objective-C:
+
+```obj-c
+- (UIImage*)getUIImage{
+    UIImage *image = ((UIImage* (*)(id, SEL))objc_msgSend)(objc_getClass("CameraPreviewPlugin"), sel_registerName("getBitmap"));
+    return image;
+}
+```
+
+You have to call `saveFrame` beforehand.
 
 ## API
 
