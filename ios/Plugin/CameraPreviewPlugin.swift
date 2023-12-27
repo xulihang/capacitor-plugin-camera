@@ -37,6 +37,14 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
         let bounds = self.webView?.bounds
         if bounds != nil {
             self.previewView.frame = bounds!
+            if UIDevice.current.orientation == UIDeviceOrientation.portrait {
+                self.previewView.videoPreviewLayer.connection?.videoOrientation = .portrait
+            }else if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
+                self.previewView.videoPreviewLayer.connection?.videoOrientation = .landscapeRight
+            }else if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
+                self.previewView.videoPreviewLayer.connection?.videoOrientation = .landscapeLeft
+            }
+            
         }
     }
     
@@ -148,9 +156,14 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
                 return
             }
             var degree = 0;
-            if connection.videoOrientation == AVCaptureVideoOrientation.landscapeRight || connection.videoOrientation == AVCaptureVideoOrientation.landscapeLeft  {
-                degree = 90
+            if UIDevice.current.orientation == UIDeviceOrientation.portrait {
+                if connection.videoOrientation == AVCaptureVideoOrientation.landscapeRight || connection.videoOrientation == AVCaptureVideoOrientation.landscapeLeft  {
+                    degree = 90
+                }
+            }else if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
+                degree = 180
             }
+            
             let image = UIImage(cgImage: cgImage)
             let rotated = rotatedUIImage(image: image, degree: degree)
             var normalized = normalizedImage(rotated)
