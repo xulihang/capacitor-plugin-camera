@@ -316,10 +316,14 @@ public class CameraPreviewPlugin extends Plugin {
                             cameraSelector = new CameraSelector.Builder()
                                     .requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
                         }
-                        cameraProvider.unbindAll();
-                        setupUseCases();
-                        camera = cameraProvider.bindToLifecycle((LifecycleOwner) getContext(), cameraSelector, useCaseGroup);
-                        triggerOnPlayed();
+                        if (camera != null) {
+                            if (camera.getCameraInfo().getCameraState().getValue().getType() == CameraState.Type.OPEN) {
+                                cameraProvider.unbindAll();
+                                setupUseCases();
+                                camera = cameraProvider.bindToLifecycle((LifecycleOwner) getContext(), cameraSelector, useCaseGroup);
+                                triggerOnPlayed();
+                            }
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         call.reject(e.getMessage());
@@ -334,11 +338,15 @@ public class CameraPreviewPlugin extends Plugin {
     }
 
     private void triggerOnPlayed(){
-        JSObject onPlayedResult = new JSObject();
-        @SuppressLint("RestrictedApi")
-        String res = imageAnalysis.getAttachedSurfaceResolution().getWidth()+"x"+imageAnalysis.getAttachedSurfaceResolution().getHeight();
-        onPlayedResult.put("resolution",res);
-        notifyListeners("onPlayed",onPlayedResult);
+        try{
+            JSObject onPlayedResult = new JSObject();
+            @SuppressLint("RestrictedApi")
+            String res = imageAnalysis.getAttachedSurfaceResolution().getWidth()+"x"+imageAnalysis.getAttachedSurfaceResolution().getHeight();
+            onPlayedResult.put("resolution",res);
+            notifyListeners("onPlayed",onPlayedResult);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -396,10 +404,19 @@ public class CameraPreviewPlugin extends Plugin {
                         }
                         desiredHeight = height;
                         desiredWidth = width;
-                        cameraProvider.unbindAll();
+                        CameraState.Type status = camera.getCameraInfo().getCameraState().getValue().getType();
+                        if (camera != null) {
+                            if (status == CameraState.Type.OPEN) {
+                                cameraProvider.unbindAll();
+                            }
+                        }
                         setupUseCases();
-                        camera = cameraProvider.bindToLifecycle((LifecycleOwner) getContext(), cameraSelector, useCaseGroup);
-                        triggerOnPlayed();
+                        if (camera != null) {
+                            if (status == CameraState.Type.OPEN) {
+                                camera = cameraProvider.bindToLifecycle((LifecycleOwner) getContext(), cameraSelector, useCaseGroup);
+                                triggerOnPlayed();
+                            }
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         call.reject(e.getMessage());
@@ -419,9 +436,14 @@ public class CameraPreviewPlugin extends Plugin {
         if (camera == null) {
             call.reject("Camera not initialized");
         }else{
-            JSObject result = new JSObject();
-            result.put("resolution",imageAnalysis.getAttachedSurfaceResolution().getWidth()+"x"+imageAnalysis.getAttachedSurfaceResolution().getHeight());
-            call.resolve(result);
+            try{
+                JSObject result = new JSObject();
+                result.put("resolution",imageAnalysis.getAttachedSurfaceResolution().getWidth()+"x"+imageAnalysis.getAttachedSurfaceResolution().getHeight());
+                call.resolve(result);
+            }catch (Exception e) {
+                call.reject(e.getMessage());
+            }
+
         }
     }
 
