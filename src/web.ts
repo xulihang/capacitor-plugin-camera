@@ -232,12 +232,17 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
           console.log("ImageCapture not supported");
         }
       }
-      let dataURL = this.camera.getFrame().toCanvas().toDataURL();
-      return {base64:dataURL};
+      let base64 = this.removeDataURLHead(this.camera.getFrame().toCanvas().toDataURL("image/jpeg"));
+      return {base64:base64};
     }else {
       throw new Error('Camera not initialized');
     }
   }
+
+  removeDataURLHead(dataURL:string){
+    return dataURL.substring(dataURL.indexOf(",")+1,dataURL.length);
+  }
+
 
   async requestCameraPermission(): Promise<void> {
     const constraints = {video: true, audio: false};
