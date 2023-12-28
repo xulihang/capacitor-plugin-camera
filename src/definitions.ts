@@ -33,7 +33,7 @@ export interface CameraPreviewPlugin {
   * take a snapshot as DCEFrame. Web Only
   */
   takeSnapshot2(): Promise<{frame:DCEFrame}>;
-  takePhoto(options: {includeBase64?: boolean}): Promise<{path?:string,base64?:string}>;
+  takePhoto(options: {includeBase64?: boolean}): Promise<{path?:string,base64?:string,blob?:Blob}>;
   toggleTorch(options: {on: boolean}): Promise<void>;
   /**
   * get the orientation of the device.
