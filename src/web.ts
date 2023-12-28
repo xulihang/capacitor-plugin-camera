@@ -211,8 +211,27 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     }
   }
 
-  async takePhoto(_options:{includeBase64?:boolean}): Promise<{ path?:string, base64?: string; }> {
+  async takePhoto(_options:{includeBase64?:boolean}): Promise<{ path?:string, base64?: string, blob?:Blob }> {
     if (this.camera) {
+      let video = this.camera.getUIElement().getElementsByTagName("video")[0];
+      let localStream:MediaStream = video.srcObject as MediaStream;
+      if (localStream) {
+        if ("ImageCapture" in window) {
+          try {
+            //@ts-ignore 
+            let ImageCapture:any = window["ImageCapture"];
+            console.log("ImageCapture supported");
+            const track = localStream.getVideoTracks()[0];
+            let imageCapture = new ImageCapture(track);
+            let blob = await imageCapture.takePhoto();
+            return {blob:blob};  
+          } catch (error) {
+            console.log(error);
+          }
+        }else{
+          console.log("ImageCapture not supported");
+        }
+      }
       let dataURL = this.camera.getFrame().toCanvas().toDataURL();
       return {base64:dataURL};
     }else {

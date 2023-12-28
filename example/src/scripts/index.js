@@ -120,8 +120,11 @@ async function captureAndClose(){
 
 async function takePhotoAndClose(){
   let result = await CameraPreview.takePhoto({includeBase64:true});
-  let base64 = result.base64;
-  document.getElementById("captured").src = "data:image/jpeg;base64," + base64;
+  if (result.base64) {
+    document.getElementById("captured").src = "data:image/jpeg;base64," + result.base64;
+  }else if (result.blob){
+    document.getElementById("captured").src = URL.createObjectURL(blob);
+  }
   await CameraPreview.stopCamera();
   toggleControlsDisplay(false);
 }
