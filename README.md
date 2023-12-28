@@ -274,14 +274,14 @@ take a snapshot as <a href="#dceframe">DCEFrame</a>. Web Only
 ### takePhoto(...)
 
 ```typescript
-takePhoto(options: { includeBase64?: boolean; }) => Promise<{ path?: string; base64?: string; }>
+takePhoto(options: { includeBase64?: boolean; }) => Promise<{ path?: string; base64?: string; blob?: Blob; }>
 ```
 
 | Param         | Type                                      |
 | ------------- | ----------------------------------------- |
 | **`options`** | <code>{ includeBase64?: boolean; }</code> |
 
-**Returns:** <code>Promise&lt;{ path?: string; base64?: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ path?: string; base64?: string; blob?: any; }&gt;</code>
 
 --------------------
 
