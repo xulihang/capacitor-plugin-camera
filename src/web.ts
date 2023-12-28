@@ -2,7 +2,7 @@ import { WebPlugin } from '@capacitor/core';
 import { CameraEnhancer, DCEFrame, PlayCallbackInfo } from 'dynamsoft-camera-enhancer';
 import { CameraPreviewPlugin, EnumResolution, ScanRegion } from './definitions';
 
-CameraEnhancer.defaultUIElementURL = "https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@3.1.0/dist/dce.ui.html";
+CameraEnhancer.defaultUIElementURL = "https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@3.3.9/dist/dce.ui.html";
 
 export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
   private camera:CameraEnhancer | undefined;
@@ -156,8 +156,17 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     }
   }
 
-  async setFocus(_options: {x: number, y: number}): Promise<void> {
-    throw new Error('Method not implemented.');
+  async setFocus(options: {x: number, y: number}): Promise<void> {
+    if (this.camera) {
+      this.camera.setFocus({
+        mode:"manual",
+        area:{
+          centerPoint:{x:options.x.toString(),y:options.y.toString()}
+        }
+      });
+    }else{
+      throw new Error('Camera not initialized');
+    }
   }
 
   async toggleTorch(options: { on: boolean; }): Promise<void> {

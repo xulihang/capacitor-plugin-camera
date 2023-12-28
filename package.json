@@ -80,6 +80,6 @@
     }
   },
   "dependencies": {
-    "dynamsoft-camera-enhancer": "3.1.0"
+    "dynamsoft-camera-enhancer": "3.3.9"
   }
 }

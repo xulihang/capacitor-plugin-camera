@@ -305,6 +305,8 @@ toggleTorch(options: { on: boolean; }) => Promise<void>
 getOrientation() => Promise<{ "orientation": "PORTRAIT" | "LANDSCAPE"; }>
 ```
 
+get the orientation of the device.
+
 **Returns:** <code>Promise&lt;{ orientation: 'PORTRAIT' | 'LANDSCAPE'; }&gt;</code>
 
 --------------------
