@@ -261,16 +261,16 @@ save a frame internally. Android and iOS only.
 ### takeSnapshot2(...)
 
 ```typescript
-takeSnapshot2(options?: { maxLength?: number | undefined; } | undefined) => Promise<{ canvas: HTMLCanvasElement; scaleRatio?: number; }>
+takeSnapshot2(options: { canvas: HTMLCanvasElement; maxLength?: number; }) => Promise<{ scaleRatio?: number; }>
 ```
 
 take a snapshot as Canvas. Web Only
 
-| Param         | Type                                 |
-| ------------- | ------------------------------------ |
-| **`options`** | <code>{ maxLength?: number; }</code> |
+| Param         | Type                                              |
+| ------------- | ------------------------------------------------- |
+| **`options`** | <code>{ canvas: any; maxLength?: number; }</code> |
 
-**Returns:** <code>Promise&lt;{ canvas: any; scaleRatio?: number; }&gt;</code>
+**Returns:** <code>Promise&lt;{ scaleRatio?: number; }&gt;</code>
 
 --------------------
 

@@ -29,9 +29,9 @@ export interface CameraPreviewPlugin {
   */
   saveFrame(): Promise<{success:boolean}>;
   /**
-  * take a snapshot as Canvas. Web Only
+  * take a snapshot on to a canvas. Web Only
   */
-  takeSnapshot2(options?:{maxLength?:number}): Promise<{canvas:HTMLCanvasElement,scaleRatio?:number}>;
+  takeSnapshot2(options:{canvas:HTMLCanvasElement,maxLength?:number}): Promise<{scaleRatio?:number}>;
   takePhoto(options: {includeBase64?: boolean}): Promise<{path?:string,base64?:string,blob?:Blob}>;
   toggleTorch(options: {on: boolean}): Promise<void>;
   /**

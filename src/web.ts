@@ -244,12 +244,11 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     }
   }
 
-  async takeSnapshot2(options?:{maxLength?:number}): Promise<{ canvas: HTMLCanvasElement; scaleRatio?:number}> {
+  async takeSnapshot2(options:{canvas:HTMLCanvasElement,maxLength?:number}): Promise<{scaleRatio?:number}> {
     if (this.camera) {
-      let canvas;
+      let canvas = options.canvas;
       let scaleRatio = 1.0;
       if (options && options.maxLength) {
-        let scaledownCanvas:HTMLCanvasElement = document.createElement("canvas");
         let res = (await this.getResolution()).resolution;
         let width = parseInt(res.split("x")[0]);
         let height = parseInt(res.split("x")[1]);
@@ -265,24 +264,36 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
             targetWidth = options.maxLength/height*width;
             scaleRatio = options.maxLength/height;
           }
-          scaledownCanvas.width = targetWidth;
-          scaledownCanvas.height = targetHeight;
+          canvas.width = targetWidth;
+          canvas.height = targetHeight;
           let video = this.camera.getUIElement().getElementsByTagName("video")[0];
-          let ctx = scaledownCanvas.getContext('2d');
+          let ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(video, 0, 0, targetWidth, targetHeight);
           }
-          canvas = scaledownCanvas;
         }else{
-          canvas = this.camera.getFrame().toCanvas();
+          this.drawFullFrame(canvas);
         }
       }else{
-        canvas = this.camera.getFrame().toCanvas();
+        this.drawFullFrame(canvas);
       }
-      return {canvas:canvas,scaleRatio:scaleRatio};
+      return {scaleRatio:scaleRatio};
     }else {
       throw new Error('Camera not initialized');
     }
+  }
+
+  drawFullFrame(canvas:HTMLCanvasElement):HTMLCanvasElement{
+    let video = this.camera?.getUIElement().getElementsByTagName("video")[0];
+    if (video) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      let ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      }
+    }
+    return canvas;
   }
 
   async takePhoto(_options:{includeBase64?:boolean}): Promise<{ path?:string, base64?: string, blob?:Blob }> {
