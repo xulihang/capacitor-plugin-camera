@@ -21,7 +21,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 999;
       position: fixed;
     }
 
@@ -30,7 +29,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 999;
       position: fixed;
     }
 
@@ -40,7 +38,6 @@
       height: 20px;
       position: absolute;
       font-family:monospace;
-      z-index: 999;
     }
 
     #zoominButton {
@@ -49,7 +46,6 @@
       height: 20px;
       position: absolute;
       font-family:monospace;
-      z-index: 999;
     }
 
     #zoomoutButton {
@@ -58,7 +54,6 @@
       height: 20px;
       position: absolute;
       font-family:monospace;
-      z-index: 999;
     }
       
     #cameraSelect {
@@ -66,7 +61,6 @@
       top:env(safe-area-inset-top);
       left:0;
       height: 20px;
-      z-index: 999;
       position:absolute;
     }
 
@@ -75,7 +69,6 @@
       top:calc(env(safe-area-inset-top) + 20px);
       left:0;
       height: 20px;
-      z-index: 999;
       position:absolute;
     }
 
@@ -84,7 +77,6 @@
       top:env(safe-area-inset-top);
       right:0;
       height: 20px;
-      z-index: 999;
       position:absolute;
     }
 
@@ -93,7 +85,6 @@
       top:calc(env(safe-area-inset-top) + 20px);
       right:0;
       height: 20px;
-      z-index: 999;
       position:absolute;
     }
 
@@ -116,6 +107,9 @@
     <ol id="barcodeResults"/>
   </div>
   <div class="controls" style="display:none;">
+    <div class="camera">
+      <div class="dce-video-container"></div>
+    </div>
     <view-finder 
       style="--scan-line-color:orange;
             --scan-rect-color:orange;"

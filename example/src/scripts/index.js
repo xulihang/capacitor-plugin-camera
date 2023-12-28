@@ -28,6 +28,7 @@ initialize();
 
 async function initialize(){
   startBtn.innerText = "Initializing...";
+  await CameraPreview.setElement(document.getElementsByClassName("camera")[0]);
   await CameraPreview.initialize();
   if (onPlayedListener) {
     await onPlayedListener.remove();

@@ -6,8 +6,13 @@ CameraEnhancer.defaultUIElementURL = "https://cdn.jsdelivr.net/npm/dynamsoft-cam
 
 export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
   private camera:CameraEnhancer | undefined;
+  private container:HTMLElement | undefined;
   async setDefaultUIElementURL(url: string): Promise<void> {
     CameraEnhancer.defaultUIElementURL = url;
+  }
+
+  async setElement(ele: HTMLElement): Promise<void> {
+    this.container = ele;
   }
 
   saveFrame(): Promise<{ success: boolean; }> {
@@ -32,12 +37,15 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
         console.log(error);
       }
     });
-    await this.camera.setUIElement(CameraEnhancer.defaultUIElementURL);
-
-    this.camera.getUIElement().getElementsByClassName("dce-btn-close")[0].remove();
-    this.camera.getUIElement().getElementsByClassName("dce-sel-camera")[0].remove();
-    this.camera.getUIElement().getElementsByClassName("dce-sel-resolution")[0].remove();
-    this.camera.getUIElement().getElementsByClassName("dce-msg-poweredby")[0].remove();
+    if (this.container) {
+      await this.camera.setUIElement(this.container);
+    }else{
+      await this.camera.setUIElement(CameraEnhancer.defaultUIElementURL);
+      this.camera.getUIElement().getElementsByClassName("dce-btn-close")[0].remove();
+      this.camera.getUIElement().getElementsByClassName("dce-sel-camera")[0].remove();
+      this.camera.getUIElement().getElementsByClassName("dce-sel-resolution")[0].remove();
+      this.camera.getUIElement().getElementsByClassName("dce-msg-poweredby")[0].remove();
+    }
   }
 
   async getResolution(): Promise<{ resolution: string; }> {

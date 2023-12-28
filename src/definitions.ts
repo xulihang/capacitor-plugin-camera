@@ -15,6 +15,10 @@ export interface CameraPreviewPlugin {
   * Web Only
   */
   setDefaultUIElementURL(url:string): Promise<void>;
+  /**
+  * Web Only
+  */
+  setElement(ele:HTMLElement): Promise<void>;
   startCamera(): Promise<void>;
   stopCamera(): Promise<void>;
   /**

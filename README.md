@@ -51,6 +51,7 @@ You have to call `saveFrame` beforehand.
 * [`setZoom(...)`](#setzoom)
 * [`setFocus(...)`](#setfocus)
 * [`setDefaultUIElementURL(...)`](#setdefaultuielementurl)
+* [`setElement(...)`](#setelement)
 * [`startCamera()`](#startcamera)
 * [`stopCamera()`](#stopcamera)
 * [`takeSnapshot(...)`](#takesnapshot)
@@ -190,6 +191,21 @@ Web Only
 | Param     | Type                |
 | --------- | ------------------- |
 | **`url`** | <code>string</code> |
+
+--------------------
+
+
+### setElement(...)
+
+```typescript
+setElement(ele: any) => Promise<void>
+```
+
+Web Only
+
+| Param     | Type             |
+| --------- | ---------------- |
+| **`ele`** | <code>any</code> |
 
 --------------------
 
