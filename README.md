@@ -264,7 +264,7 @@ save a frame internally. Android and iOS only.
 takeSnapshot2(options: { canvas: HTMLCanvasElement; maxLength?: number; }) => Promise<{ scaleRatio?: number; }>
 ```
 
-take a snapshot as Canvas. Web Only
+take a snapshot on to a canvas. Web Only
 
 | Param         | Type                                              |
 | ------------- | ------------------------------------------------- |
