@@ -19,8 +19,13 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     throw new Error('Method not implemented.');
   }
 
-  getOrientation(): Promise<{"orientation":"PORTRAIT"|"LANDSCAPE"}> {
-    throw new Error('Method not implemented.');
+  async getOrientation(): Promise<{"orientation":"PORTRAIT"|"LANDSCAPE"}> {
+    let portrait = window.matchMedia("(orientation: portrait)");
+    if (portrait.matches) {
+      return {orientation:"PORTRAIT"};
+    }else{
+      return {orientation:"LANDSCAPE"};
+    }
   }
 
   async initialize(): Promise<void> {
@@ -37,6 +42,11 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
         console.log(error);
       }
     });
+    let pThis = this;
+    let portrait = window.matchMedia("(orientation: portrait)");
+    portrait.addEventListener("change", function() {
+      pThis.notifyListeners("onOrientationChanged", null);
+    })
     if (this.container) {
       await this.camera.setUIElement(this.container);
     }else{
