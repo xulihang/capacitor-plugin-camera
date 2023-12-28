@@ -31,7 +31,6 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
 
   async initialize(): Promise<void> {
     this.camera = await CameraEnhancer.createInstance();
-    this.camera.setVideoFit("cover");
     this.camera.on("played", (playCallBackInfo:PlayCallbackInfo) => {
       this.notifyListeners("onPlayed", {resolution:playCallBackInfo.width+"x"+playCallBackInfo.height});
       try {
@@ -43,11 +42,6 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
         console.log(error);
       }
     });
-    let pThis = this;
-    let portrait = window.matchMedia("(orientation: portrait)");
-    portrait.addEventListener("change", function() {
-      pThis.notifyListeners("onOrientationChanged", null);
-    })
     if (this.container) {
       await this.camera.setUIElement(this.container);
     }else{
@@ -57,6 +51,11 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       this.camera.getUIElement().getElementsByClassName("dce-sel-resolution")[0].remove();
       this.camera.getUIElement().getElementsByClassName("dce-msg-poweredby")[0].remove();
     }
+    this.camera.setVideoFit("cover");
+    let portrait = window.matchMedia("(orientation: portrait)");
+    portrait.addEventListener("change", () => {
+      this.notifyListeners("onOrientationChanged", null);
+    })
   }
 
   async getResolution(): Promise<{ resolution: string; }> {
@@ -193,9 +192,25 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
 
   async startCamera(): Promise<void> {
     if (this.camera) {
-      await this.camera.open(true);
+      await this.camera?.open(true);
+      if (this.container && this.isSafari() === true) {
+        const resetZoom = async () => {
+          await this.camera?.setZoom(1.001);
+          await this.camera?.setZoom(1.0);
+        }
+        setTimeout(resetZoom,500);
+      }
     }else {
       throw new Error('Camera not initialized');
+    }
+  }
+
+  isSafari():boolean{
+    const u = navigator.userAgent.toLowerCase()
+    if (u.indexOf('safari') > -1 && u.indexOf('chrome') === -1) {
+      return true;
+    }else{
+      return false;
     }
   }
 
