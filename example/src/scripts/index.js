@@ -48,9 +48,8 @@ async function initialize(){
   });
   onOrientationChangedListener = await CameraPreview.addListener('onOrientationChanged',async () => {
     console.log("onOrientationChanged");
-    let res = await CameraPreview.getResolution();
-    updateViewfinder(res.resolution);
-    updateOverlay(res.resolution);
+    setTimeout(updateViewfinder,500);
+    setTimeout(updateOverlay,500);
   });
   await CameraPreview.requestCameraPermission();
   await CameraPreview.setScanRegion({region:{top:20,left:10,right:90,bottom:60,measuredByPercentage:1}});
@@ -61,8 +60,9 @@ async function initialize(){
 }
 
 async function updateViewfinder(res){
-  console.log(res);
-  console.log("update view finder");
+  if (!res) {
+    res = (await CameraPreview.getResolution()).resolution;
+  }
   let width = res.split("x")[0];
   let height = res.split("x")[1];
   if (Capacitor.isNativePlatform()) {
@@ -82,6 +82,9 @@ async function updateViewfinder(res){
 }
 
 async function updateOverlay(res){
+  if (!res) {
+    res = (await CameraPreview.getResolution()).resolution;
+  }
   let width = res.split("x")[0];
   let height = res.split("x")[1];
   if (Capacitor.isNativePlatform()) {
