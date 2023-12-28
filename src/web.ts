@@ -1,5 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-import { CameraEnhancer, DCEFrame, PlayCallbackInfo } from 'dynamsoft-camera-enhancer';
+import { CameraEnhancer, PlayCallbackInfo } from 'dynamsoft-camera-enhancer';
 import { CameraPreviewPlugin, EnumResolution, ScanRegion } from './definitions';
 
 CameraEnhancer.defaultUIElementURL = "https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@3.3.9/dist/dce.ui.html";
@@ -244,10 +244,42 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     }
   }
 
-  async takeSnapshot2(): Promise<{ frame: DCEFrame; }> {
+  async takeSnapshot2(options?:{maxLength?:number}): Promise<{ canvas: HTMLCanvasElement; scaleRatio?:number}> {
     if (this.camera) {
-      let frame = this.camera.getFrame();
-      return {frame:frame};
+      let canvas;
+      let scaleRatio = 1.0;
+      if (options && options.maxLength) {
+        let scaledownCanvas:HTMLCanvasElement = document.createElement("canvas");
+        let res = (await this.getResolution()).resolution;
+        let width = parseInt(res.split("x")[0]);
+        let height = parseInt(res.split("x")[1]);
+        let targetWidth = width;
+        let targetHeight = height;
+        if (width > options.maxLength || height > options.maxLength) {
+          if (width > height) {
+            targetWidth = options.maxLength;
+            targetHeight = options.maxLength/width*height;
+            scaleRatio = options.maxLength/width;
+          }else{
+            targetHeight = options.maxLength;
+            targetWidth = options.maxLength/height*width;
+            scaleRatio = options.maxLength/height;
+          }
+          scaledownCanvas.width = targetWidth;
+          scaledownCanvas.height = targetHeight;
+          let video = this.camera.getUIElement().getElementsByTagName("video")[0];
+          let ctx = scaledownCanvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(video, 0, 0, targetWidth, targetHeight);
+          }
+          canvas = scaledownCanvas;
+        }else{
+          canvas = this.camera.getFrame().toCanvas();
+        }
+      }else{
+        canvas = this.camera.getFrame().toCanvas();
+      }
+      return {canvas:canvas,scaleRatio:scaleRatio};
     }else {
       throw new Error('Camera not initialized');
     }

@@ -1,5 +1,4 @@
 import { PluginListenerHandle } from "@capacitor/core";
-import { DCEFrame } from "dynamsoft-camera-enhancer";
 
 export interface CameraPreviewPlugin {
   initialize(): Promise<void>;
@@ -30,9 +29,9 @@ export interface CameraPreviewPlugin {
   */
   saveFrame(): Promise<{success:boolean}>;
   /**
-  * take a snapshot as DCEFrame. Web Only
+  * take a snapshot as Canvas. Web Only
   */
-  takeSnapshot2(): Promise<{frame:DCEFrame}>;
+  takeSnapshot2(options?:{maxLength?:number}): Promise<{canvas:HTMLCanvasElement,scaleRatio?:number}>;
   takePhoto(options: {includeBase64?: boolean}): Promise<{path?:string,base64?:string,blob?:Blob}>;
   toggleTorch(options: {on: boolean}): Promise<void>;
   /**
