@@ -123,7 +123,7 @@ async function takePhotoAndClose(){
   if (result.base64) {
     document.getElementById("captured").src = "data:image/jpeg;base64," + result.base64;
   }else if (result.blob){
-    document.getElementById("captured").src = URL.createObjectURL(blob);
+    document.getElementById("captured").src = URL.createObjectURL(result.blob);
   }
   await CameraPreview.stopCamera();
   toggleControlsDisplay(false);
