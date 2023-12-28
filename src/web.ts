@@ -7,6 +7,7 @@ CameraEnhancer.defaultUIElementURL = "https://cdn.jsdelivr.net/npm/dynamsoft-cam
 export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
   private camera:CameraEnhancer | undefined;
   private container:HTMLElement | undefined;
+  private region:ScanRegion | undefined;
   async setDefaultUIElementURL(url: string): Promise<void> {
     CameraEnhancer.defaultUIElementURL = url;
   }
@@ -135,15 +136,22 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
 
   async setScanRegion(options: { region: ScanRegion; }): Promise<void> {
     if (this.camera){
-      this.camera.setScanRegion({
-        regionLeft:options.region.left,
-        regionTop:options.region.top,
-        regionRight:options.region.right,
-        regionBottom:options.region.bottom,
-        regionMeasuredByPercentage: options.region.measuredByPercentage
-      })
+      this.region = options.region;
+      this.applyScanRegion();
     }else {
       throw new Error('Camera not initialized');
+    }
+  }
+
+  applyScanRegion(){
+    if (this.camera && this.region){
+      this.camera.setScanRegion({
+        regionLeft:this.region.left,
+        regionTop:this.region.top,
+        regionRight:this.region.right,
+        regionBottom:this.region.bottom,
+        regionMeasuredByPercentage: this.region.measuredByPercentage
+      });
     }
   }
 
@@ -251,7 +259,17 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
           console.log("ImageCapture not supported");
         }
       }
+      this.camera.setScanRegion(
+        {
+          regionLeft: 0,
+          regionTop: 0,
+          regionBottom: 100,
+          regionRight: 100,
+          regionMeasuredByPercentage: 1
+        }
+      )
       let base64 = this.removeDataURLHead(this.camera.getFrame().toCanvas().toDataURL("image/jpeg"));
+      this.applyScanRegion();
       return {base64:base64};
     }else {
       throw new Error('Camera not initialized');
