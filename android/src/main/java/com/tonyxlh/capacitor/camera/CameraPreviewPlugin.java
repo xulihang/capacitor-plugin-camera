@@ -469,8 +469,13 @@ public class CameraPreviewPlugin extends Plugin {
 
     @PluginMethod
     public void takePhoto(PluginCall call){
-        File dir = getContext().getExternalCacheDir();
-        File file = new File(dir, "photo.jpg");
+        File file;
+        if (call.hasOption("pathToSave")) {
+            file = new File(call.getString("pathToSave"));
+        }else{
+            File dir = getContext().getExternalCacheDir();
+            file = new File(dir, "photo.jpg");
+        }
         ImageCapture.OutputFileOptions outputFileOptions =
                 new ImageCapture.OutputFileOptions.Builder(file).build();
         imageCapture.takePicture(outputFileOptions, exec,

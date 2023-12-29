@@ -32,7 +32,7 @@ export interface CameraPreviewPlugin {
   * take a snapshot on to a canvas. Web Only
   */
   takeSnapshot2(options:{canvas:HTMLCanvasElement,maxLength?:number}): Promise<{scaleRatio?:number}>;
-  takePhoto(options: {includeBase64?: boolean}): Promise<{path?:string,base64?:string,blob?:Blob}>;
+  takePhoto(options: {pathToSave?:string,includeBase64?: boolean}): Promise<{path?:string,base64?:string,blob?:Blob}>;
   toggleTorch(options: {on: boolean}): Promise<void>;
   /**
   * get the orientation of the device.

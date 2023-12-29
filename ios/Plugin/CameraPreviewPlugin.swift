@@ -107,6 +107,7 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
         let photoSettings: AVCapturePhotoSettings
         photoSettings = AVCapturePhotoSettings()
         photoSettings.isHighResolutionPhotoEnabled = true
+        
         self.photoOutput.capturePhoto(with: photoSettings, delegate: self)
     }
     
@@ -115,10 +116,28 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
             print("Error:", error)
         } else {
             if let imageData = photo.fileDataRepresentation() {
-                let image = UIImage(data: imageData)
-                let base64 = getBase64FromImage(image: image!, quality: 100.0)
                 var ret = PluginCallResultData()
-                ret["base64"] = base64
+                var url:URL
+                let pathToSave = takePhotoCall.getString("pathToSave", "")
+                if pathToSave == "" {
+                    url = FileManager.default.temporaryDirectory
+                        .appendingPathComponent(UUID().uuidString)
+                        .appendingPathExtension("jpeg")
+                }else{
+                    url = URL(string: "file://\(pathToSave)")!
+                }
+                if takePhotoCall.getBool("includeBase64", false) {
+                    let image = UIImage(data: imageData)
+                    let base64 = getBase64FromImage(image: image!, quality: 100.0)
+                    ret["base64"] = base64
+                }
+                do {
+                    
+                    try imageData.write(to: url)
+                    ret["path"] = url.absoluteString
+                } catch {
+                    print(error)
+                }
                 takePhotoCall.resolve(ret)
                 takePhotoCall = nil
             }
