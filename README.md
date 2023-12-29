@@ -278,12 +278,12 @@ take a snapshot on to a canvas. Web Only
 ### takePhoto(...)
 
 ```typescript
-takePhoto(options: { includeBase64?: boolean; }) => Promise<{ path?: string; base64?: string; blob?: Blob; }>
+takePhoto(options: { pathToSave?: string; includeBase64?: boolean; }) => Promise<{ path?: string; base64?: string; blob?: Blob; }>
 ```
 
-| Param         | Type                                      |
-| ------------- | ----------------------------------------- |
-| **`options`** | <code>{ includeBase64?: boolean; }</code> |
+| Param         | Type                                                           |
+| ------------- | -------------------------------------------------------------- |
+| **`options`** | <code>{ pathToSave?: string; includeBase64?: boolean; }</code> |
 
 **Returns:** <code>Promise&lt;{ path?: string; base64?: string; blob?: any; }&gt;</code>
 
