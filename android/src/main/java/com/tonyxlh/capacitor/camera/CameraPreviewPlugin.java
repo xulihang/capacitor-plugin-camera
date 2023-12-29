@@ -52,6 +52,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -474,7 +475,7 @@ public class CameraPreviewPlugin extends Plugin {
             file = new File(call.getString("pathToSave"));
         }else{
             File dir = getContext().getExternalCacheDir();
-            file = new File(dir, "photo.jpg");
+            file = new File(dir, new Date().getTime()+".jpg");
         }
         ImageCapture.OutputFileOptions outputFileOptions =
                 new ImageCapture.OutputFileOptions.Builder(file).build();
