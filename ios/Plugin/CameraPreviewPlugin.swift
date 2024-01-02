@@ -134,7 +134,7 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
                 do {
                     
                     try imageData.write(to: url)
-                    ret["path"] = url.absoluteString
+                    ret["path"] = url.path
                 } catch {
                     print(error)
                 }
