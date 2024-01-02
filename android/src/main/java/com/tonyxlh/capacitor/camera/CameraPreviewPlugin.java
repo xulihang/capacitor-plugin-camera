@@ -264,7 +264,7 @@ public class CameraPreviewPlugin extends Plugin {
         } catch (JSONException e) {
             call.reject(e.getMessage());
         }
-         call.resolve();
+        call.resolve();
     }
 
     @PluginMethod
@@ -405,8 +405,9 @@ public class CameraPreviewPlugin extends Plugin {
                         }
                         desiredHeight = height;
                         desiredWidth = width;
-                        CameraState.Type status = camera.getCameraInfo().getCameraState().getValue().getType();
+                        CameraState.Type status = null;
                         if (camera != null) {
+                            status = camera.getCameraInfo().getCameraState().getValue().getType();
                             if (status == CameraState.Type.OPEN) {
                                 cameraProvider.unbindAll();
                             }
