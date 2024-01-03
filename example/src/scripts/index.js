@@ -144,22 +144,49 @@ async function toggleVideoRecording(){
     await CameraPreview.startRecording();
     recordVideoButton.innerText = "Stop Recoding";
   }else{
-    let result = await CameraPreview.stopRecording();
+    let result = await CameraPreview.stopRecording({includeBase64:true});
     console.log(result);
     recordVideoButton.innerText = "Record Video";
-    closeCameraAndDisplayVideo(result.blob);
+    closeCameraAndDisplayVideo(result);
   }
 }
 
-async function closeCameraAndDisplayVideo(blob){
+async function closeCameraAndDisplayVideo(result){
   await CameraPreview.stopCamera();
   let video = document.getElementById("capturedVideo");
   video.src = video.srcObject = null;
   video.muted = false;
   video.volume = 1;
-  video.src = URL.createObjectURL(blob);
-  video.style.display = "block";
+  let blob;
+  if (result.blob) {
+    blob = result.blob;
+  }else if (result.base64) {
+    blob = b64toBlob(result.base64,"video/mp4");
+  }
+  if (blob) {
+    video.src = URL.createObjectURL(blob);
+    video.style.display = "block";
+  }
   toggleControlsDisplay(false);
+}
+
+const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+  const byteCharacters = atob(b64Data);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+  const blob = new Blob(byteArrays, {type: contentType});
+  return blob;
 }
 
 async function loadCameras(){
