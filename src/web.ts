@@ -9,6 +9,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
   private container:HTMLElement | undefined;
   private region:ScanRegion | undefined;
   private recorder:RecordRTC | null | undefined;
+  private hasMicrophone: boolean = false;
   async setDefaultUIElementURL(url: string): Promise<void> {
     CameraEnhancer.defaultUIElementURL = url;
   }
@@ -351,17 +352,28 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
   }
 
   async requestMicroPhonePermission(): Promise<void> {
-    const constraints = {video: false, audio: true};
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    const tracks = stream.getTracks();
-    for (let i=0;i<tracks.length;i++) {
-      const track = tracks[i];
-      track.stop();  // stop the opened tracks
+    try {
+      const constraints = {video: false, audio: true};
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      const tracks = stream.getTracks();
+      for (let i=0;i<tracks.length;i++) {
+        const track = tracks[i];
+        track.stop();  // stop the opened tracks
+      }
+      this.hasMicrophone = true;
+    } catch (error) {
+      this.hasMicrophone = false;
+      throw error;
     }
   }
 
   async startRecording(): Promise<void> {
     if (this.camera) {
+      if (this.hasMicrophone) {
+        let settings = this.camera.getVideoSettings();
+        settings.audio = true;
+        await this.camera.updateVideoSettings(settings);
+      }
       let video = this.camera.getUIElement().getElementsByTagName("video")[0];
       this.recorder = new RecordRTC(video.srcObject as MediaStream, {
         type: 'video'
