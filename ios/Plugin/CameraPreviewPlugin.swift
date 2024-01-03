@@ -8,13 +8,16 @@ import AVFoundation
  * here: https://capacitorjs.com/docs/plugins/ios
  */
 @objc(CameraPreviewPlugin)
-public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
+public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
+    
     var previewView: PreviewView!
     var captureSession: AVCaptureSession!
     var photoOutput: AVCapturePhotoOutput!
     var videoOutput: AVCaptureVideoDataOutput!
+    var movieFileOutput: AVCaptureMovieFileOutput!
     var takeSnapshotCall: CAPPluginCall! = nil
     var takePhotoCall: CAPPluginCall! = nil
+    var stopRecordingCall: CAPPluginCall! = nil
     var getResolutionCall: CAPPluginCall! = nil
     var saveFrameCall: CAPPluginCall! = nil
     static public var frameTaken:UIImage!
@@ -95,6 +98,11 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
                 //self.photoOutput.
                 if self.captureSession.canAddOutput(self.photoOutput) {
                     self.captureSession.addOutput(photoOutput)
+                }
+                
+                self.movieFileOutput = AVCaptureMovieFileOutput()
+                if self.captureSession.canAddOutput(self.movieFileOutput) {
+                    self.captureSession.addOutput(movieFileOutput)
                 }
                 
                 self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
@@ -375,12 +383,37 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
    }
     
     @objc func startRecording(_ call: CAPPluginCall) {
-        
+        self.movieFileOutput!.startRecording(to: self.getTemp(), recordingDelegate: self)
         call.resolve()
     }
     
+    public func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        if self.stopRecordingCall != nil {
+            var ret = PluginCallResultData()
+            ret["path"] = outputFileURL.path
+            if self.stopRecordingCall.getBool("includeBase64", false) {
+                let data = try? Data(contentsOf: outputFileURL)
+                ret["base64"] = data?.base64EncodedString()
+            }
+            self.stopRecordingCall.resolve(ret)
+            self.stopRecordingCall = nil
+        }
+    }
+    
+    private func getTemp() -> URL
+    {
+        let tempName = NSUUID().uuidString
+        let tempPath = (NSTemporaryDirectory() as NSString).appendingPathComponent((tempName as NSString).appendingPathExtension("mov")!)
+        
+        print("Temp path: \(tempPath)")
+        
+        return URL(fileURLWithPath: tempPath)
+    }
+    
     @objc func stopRecording(_ call: CAPPluginCall) {
-        call.resolve()
+        call.keepAlive = true
+        self.stopRecordingCall = call
+        self.movieFileOutput.stopRecording()
     }
     
     func captureDevice(with position: AVCaptureDevice.Position) -> AVCaptureDevice? {
