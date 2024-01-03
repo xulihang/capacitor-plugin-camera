@@ -363,7 +363,7 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
   async startRecording(): Promise<void> {
     if (this.camera) {
       let video = this.camera.getUIElement().getElementsByTagName("video")[0];
-      this.recorder = new RecordRTC(video, {
+      this.recorder = new RecordRTC(video.srcObject as MediaStream, {
         type: 'video'
       });
       this.recorder.startRecording();
