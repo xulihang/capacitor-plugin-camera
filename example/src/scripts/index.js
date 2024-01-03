@@ -89,11 +89,13 @@ async function updateViewfinder(res){
     viewFinder.top = height * 0.2;
     viewFinder.right = width * 0.9;
     viewFinder.bottom = height * 0.6;
+    viewFinder.className = "";
   }else{
     viewFinder.left = 0;
     viewFinder.top = 0;
     viewFinder.right = width;
     viewFinder.bottom = height;
+    viewFinder.className = "transparentViewFinder";
   }
 }
 

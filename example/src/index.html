@@ -16,14 +16,6 @@
       padding-top: env(safe-area-inset-top);
     }
 
-    view-finder {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      position: fixed;
-    }
-
     .overlay {
       top: 0;
       left: 0;
@@ -110,6 +102,22 @@
       stroke:white;
       stroke-width:1;
     }
+
+    view-finder {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      --scan-line-color:orange;
+      --scan-rect-color:orange;
+      visibility: inherit;
+    }
+
+    .transparentViewFinder {
+      --scan-line-color:orange;
+      --scan-rect-color:transparent;
+    }
   </style>
 </head>
 <body>
@@ -129,8 +137,6 @@
       <div class="dce-video-container"></div>
     </div>
     <view-finder 
-      style="--scan-line-color:orange;
-            --scan-rect-color:orange;"
       width="1280"
       height="720"
       left="320"
