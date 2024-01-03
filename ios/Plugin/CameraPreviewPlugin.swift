@@ -68,7 +68,14 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
 
         // Find the default audio device.
         guard let videoDevice = AVCaptureDevice.default(for: .video) else { return }
-        
+        let microphone = AVCaptureDevice.default(for: AVMediaType.audio)
+        if microphone != nil {
+            let micInput = try? AVCaptureDeviceInput(device: microphone!)
+            if captureSession.canAddInput(micInput!) {
+                captureSession.addInput(micInput!)
+            }
+        }
+       
         do {
             // Wrap the video device in a capture device input.
             self.videoInput = try AVCaptureDeviceInput(device: videoDevice)
@@ -366,7 +373,16 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
        }
        return CGFloat(Float(value)!)
    }
-
+    
+    @objc func startRecording(_ call: CAPPluginCall) {
+        
+        call.resolve()
+    }
+    
+    @objc func stopRecording(_ call: CAPPluginCall) {
+        call.resolve()
+    }
+    
     func captureDevice(with position: AVCaptureDevice.Position) -> AVCaptureDevice? {
 
         let devices = AVCaptureDevice.DiscoverySession(deviceTypes: [ .builtInWideAngleCamera, .builtInMicrophone, .builtInDualCamera, .builtInTelephotoCamera ], mediaType: AVMediaType.video, position: .unspecified).devices

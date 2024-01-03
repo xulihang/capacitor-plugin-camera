@@ -18,6 +18,8 @@ CAP_PLUGIN(CameraPreviewPlugin, "CameraPreview",
            CAP_PLUGIN_METHOD(saveFrame, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(startCamera, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(stopCamera, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(startRecording, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(stopRecording, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(takeSnapshot, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(takePhoto, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(toggleTorch, CAPPluginReturnPromise);

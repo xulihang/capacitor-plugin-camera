@@ -47,5 +47,7 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>For text scanning</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>For video recording</string>
 </dict>
 </plist>
