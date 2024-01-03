@@ -39,6 +39,7 @@ export interface CameraPreviewPlugin {
   */
   getOrientation(): Promise<{"orientation":"PORTRAIT"|"LANDSCAPE"}>;
   requestCameraPermission(): Promise<void>;
+  requestMicroPhonePermission(): Promise<void>;
   isOpen():Promise<{isOpen:boolean}>;
   addListener(
     eventName: 'onPlayed',

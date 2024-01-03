@@ -345,7 +345,17 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
     const tracks = stream.getTracks();
     for (let i=0;i<tracks.length;i++) {
       const track = tracks[i];
-      track.stop();  // stop the opened camera
+      track.stop();  // stop the opened tracks
+    }
+  }
+
+  async requestMicroPhonePermission(): Promise<void> {
+    const constraints = {video: false, audio: true};
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const tracks = stream.getTracks();
+    for (let i=0;i<tracks.length;i++) {
+      const track = tracks[i];
+      track.stop();  // stop the opened tracks
     }
   }
 }

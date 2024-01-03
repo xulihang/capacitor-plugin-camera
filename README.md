@@ -61,6 +61,7 @@ You have to call `saveFrame` beforehand.
 * [`toggleTorch(...)`](#toggletorch)
 * [`getOrientation()`](#getorientation)
 * [`requestCameraPermission()`](#requestcamerapermission)
+* [`requestMicroPhonePermission()`](#requestmicrophonepermission)
 * [`isOpen()`](#isopen)
 * [`addListener('onPlayed', ...)`](#addlisteneronplayed)
 * [`addListener('onOrientationChanged', ...)`](#addlisteneronorientationchanged)
@@ -320,6 +321,15 @@ get the orientation of the device.
 
 ```typescript
 requestCameraPermission() => Promise<void>
+```
+
+--------------------
+
+
+### requestMicroPhonePermission()
+
+```typescript
+requestMicroPhonePermission() => Promise<void>
 ```
 
 --------------------

@@ -62,11 +62,13 @@ import java.util.concurrent.TimeUnit;
         name = "CameraPreview",
         permissions = {
                 @Permission(strings = { Manifest.permission.CAMERA }, alias = CameraPreviewPlugin.CAMERA),
+                @Permission(strings = { Manifest.permission.RECORD_AUDIO }, alias = CameraPreviewPlugin.MICROPHONE),
         }
 )
 public class CameraPreviewPlugin extends Plugin {
     // Permission alias constants
     static final String CAMERA = "camera";
+    static final String MICROPHONE = "microphone";
     private String callbackID;
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -592,6 +594,29 @@ public class CameraPreviewPlugin extends Plugin {
             call.reject("Permission not granted.");
         }
     }
+
+    @PluginMethod
+    public void requestMicroPhonePermission(PluginCall call) {
+        boolean hasCameraPerms = getPermissionState(MICROPHONE) == PermissionState.GRANTED;
+        if (hasCameraPerms == false) {
+            Log.d("Camera","no microphone permission. request permission.");
+            String[] aliases = new String[] { MICROPHONE };
+            requestPermissionForAliases(aliases, call, "microphonePermissionsCallback");
+        }else{
+            call.resolve();
+        }
+    }
+
+    @PermissionCallback
+    private void microphonePermissionsCallback(PluginCall call) {
+        boolean hasPerms = getPermissionState(MICROPHONE) == PermissionState.GRANTED;
+        if (hasPerms) {
+            call.resolve();
+        }else {
+            call.reject("Permission not granted.");
+        }
+    }
+
     @PluginMethod
     public void getOrientation(PluginCall call) {
         int orientation = getContext().getResources().getConfiguration().orientation;

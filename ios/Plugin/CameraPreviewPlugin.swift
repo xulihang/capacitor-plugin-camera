@@ -394,6 +394,10 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
     @objc func requestCameraPermission(_ call: CAPPluginCall) {
         call.resolve()
     }
+
+    @objc func requestMicroPhonePermission(_ call: CAPPluginCall) {
+        call.resolve()
+    }
     
     @objc func isOpen(_ call: CAPPluginCall) {
         var ret = PluginCallResultData()
