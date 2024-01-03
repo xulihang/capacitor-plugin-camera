@@ -64,8 +64,8 @@ async function initialize(){
   loadResolutions();
   startBtn.innerText = "Start Camera";
   startBtn.disabled = "";
-  console.log("set layout");
-  await CameraPreview.setLayout({left:"80%",width:"20%",top:"0%",height:"20%"});
+  //console.log("set layout");
+  //await CameraPreview.setLayout({left:"80%",width:"20%",top:"0%",height:"20%"});
 }
 
 async function updateViewfinder(res){
