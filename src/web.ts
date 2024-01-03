@@ -1,13 +1,14 @@
 import { WebPlugin } from '@capacitor/core';
 import { CameraEnhancer, PlayCallbackInfo } from 'dynamsoft-camera-enhancer';
 import { CameraPreviewPlugin, EnumResolution, ScanRegion } from './definitions';
-
+import RecordRTC from 'recordrtc';
 CameraEnhancer.defaultUIElementURL = "https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@3.3.9/dist/dce.ui.html";
 
 export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
   private camera:CameraEnhancer | undefined;
   private container:HTMLElement | undefined;
   private region:ScanRegion | undefined;
+  private recorder:RecordRTC | null | undefined;
   async setDefaultUIElementURL(url: string): Promise<void> {
     CameraEnhancer.defaultUIElementURL = url;
   }
@@ -357,5 +358,33 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       const track = tracks[i];
       track.stop();  // stop the opened tracks
     }
+  }
+
+  async startRecording(): Promise<void> {
+    if (this.camera) {
+      let video = this.camera.getUIElement().getElementsByTagName("video")[0];
+      this.recorder = new RecordRTC(video, {
+        type: 'video'
+      });
+      this.recorder.startRecording();
+    }else{
+      throw new Error("camera not initialized");
+    }
+  }
+
+  async stopRecording(): Promise<{blob:Blob}> {
+    return new Promise<{blob:Blob}>((resolve, reject) => {
+      if (this.recorder) {
+        const stopRecordingCallback = () => {
+          let blob = this.recorder!.getBlob();
+          this.recorder!.destroy();
+          this.recorder = null;
+          resolve({blob})
+        }
+        this.recorder.stopRecording(stopRecordingCallback);
+      }else{
+        reject("recorder not initialized");
+      }
+    })    
   }
 }

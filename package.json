@@ -85,6 +85,8 @@
     }
   },
   "dependencies": {
-    "dynamsoft-camera-enhancer": "3.3.9"
+    "@types/recordrtc": "^5.6.14",
+    "dynamsoft-camera-enhancer": "3.3.9",
+    "recordrtc": "^5.6.2"
   }
 }

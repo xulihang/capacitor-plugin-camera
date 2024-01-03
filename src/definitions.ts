@@ -38,6 +38,8 @@ export interface CameraPreviewPlugin {
   * get the orientation of the device.
   */
   getOrientation(): Promise<{"orientation":"PORTRAIT"|"LANDSCAPE"}>;
+  startRecording(): Promise<void>;
+  stopRecording(): Promise<{blob:Blob}>;
   requestCameraPermission(): Promise<void>;
   requestMicroPhonePermission(): Promise<void>;
   isOpen():Promise<{isOpen:boolean}>;
