@@ -88,8 +88,21 @@
       position:absolute;
     }
 
+    #recordVideoButton {
+      top:40px;
+      top:calc(env(safe-area-inset-top) + 40px);
+      right:0;
+      height: 20px;
+      position:absolute;
+    }
+
     #captured {
       max-width: 100%;
+    }
+
+    #capturedVideo {
+      max-width: 100%;
+      display: none;
     }
 
     .focus-polygon {
@@ -102,9 +115,10 @@
 <body>
   <div class="home">
     <button id="startBtn" disabled>Start Camera</button>
-    <p>Dynamsoft Barcode Reader is going to read barcodes from the camera preview.</p>
-    <img id="captured"/>
-    <ol id="barcodeResults"/>
+    <div>
+      <img id="captured"/>
+      <video id="capturedVideo" controls autoplay playsinline/>
+    </div>
   </div>
   <div class="controls" style="display:none;">
     <div class="camera">
@@ -126,6 +140,7 @@
     <select id="resolutionSelect"></select>
     <button id="captureButton" type="button">Capture</button>
     <button id="takePhotoButton" type="button">Take Photo</button>
+    <button id="recordVideoButton" type="button">Record Video</button>
     <button id="zoominButton" type="button">+</button>
     <button id="zoomoutButton" type="button">-</button>
     <button id="toggleTorchButton" type="button">Toggle Torch</button>

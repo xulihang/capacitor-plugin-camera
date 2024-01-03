@@ -60,6 +60,8 @@ You have to call `saveFrame` beforehand.
 * [`takePhoto(...)`](#takephoto)
 * [`toggleTorch(...)`](#toggletorch)
 * [`getOrientation()`](#getorientation)
+* [`startRecording()`](#startrecording)
+* [`stopRecording()`](#stoprecording)
 * [`requestCameraPermission()`](#requestcamerapermission)
 * [`requestMicroPhonePermission()`](#requestmicrophonepermission)
 * [`isOpen()`](#isopen)
@@ -313,6 +315,26 @@ getOrientation() => Promise<{ "orientation": "PORTRAIT" | "LANDSCAPE"; }>
 get the orientation of the device.
 
 **Returns:** <code>Promise&lt;{ orientation: 'PORTRAIT' | 'LANDSCAPE'; }&gt;</code>
+
+--------------------
+
+
+### startRecording()
+
+```typescript
+startRecording() => Promise<void>
+```
+
+--------------------
+
+
+### stopRecording()
+
+```typescript
+stopRecording() => Promise<{ blob: Blob; }>
+```
+
+**Returns:** <code>Promise&lt;{ blob: any; }&gt;</code>
 
 --------------------
 

@@ -8,6 +8,7 @@ let onPlayedListener;
 let onOrientationChangedListener;
 let captureBtn = document.getElementById("captureButton");
 let takePhotoButton = document.getElementById("takePhotoButton");
+let recordVideoButton = document.getElementById("recordVideoButton");
 let zoominBtn = document.getElementById("zoominButton");
 let zoomoutBtn = document.getElementById("zoomoutButton");
 let startBtn = document.getElementById("startBtn");
@@ -15,6 +16,7 @@ let toggleTorchBtn = document.getElementById("toggleTorchButton");
 startBtn.addEventListener("click",startCamera);
 captureBtn.addEventListener("click",captureAndClose);
 takePhotoButton.addEventListener("click",takePhotoAndClose);
+recordVideoButton.addEventListener("click",toggleVideoRecording);
 zoominBtn.addEventListener("click",zoomin);
 zoomoutBtn.addEventListener("click",zoomout);
 toggleTorchBtn.addEventListener("click",toggleTorch);
@@ -52,6 +54,11 @@ async function initialize(){
     setTimeout(updateOverlay,500);
   });
   await CameraPreview.requestCameraPermission();
+  try {
+    await CameraPreview.requestMicroPhonePermission();
+  } catch (error) {
+    console.log(error);
+  }
   await CameraPreview.setScanRegion({region:{top:20,left:10,right:90,bottom:60,measuredByPercentage:1}});
   await loadCameras();
   loadResolutions();
@@ -129,6 +136,29 @@ async function takePhotoAndClose(){
     document.getElementById("captured").src = URL.createObjectURL(result.blob);
   }
   await CameraPreview.stopCamera();
+  toggleControlsDisplay(false);
+}
+
+async function toggleVideoRecording(){
+  if (recordVideoButton.innerText === "Record Video") {
+    await CameraPreview.startRecording();
+    recordVideoButton.innerText = "Stop Recoding";
+  }else{
+    let result = await CameraPreview.stopRecording();
+    console.log(result);
+    recordVideoButton.innerText = "Record Video";
+    closeCameraAndDisplayVideo(result.blob);
+  }
+}
+
+async function closeCameraAndDisplayVideo(blob){
+  await CameraPreview.stopCamera();
+  let video = document.getElementById("capturedVideo");
+  video.src = video.srcObject = null;
+  video.muted = false;
+  video.volume = 1;
+  video.src = URL.createObjectURL(blob);
+  video.style.display = "block";
   toggleControlsDisplay(false);
 }
 
