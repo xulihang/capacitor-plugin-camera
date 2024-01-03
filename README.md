@@ -59,6 +59,20 @@ Add the following to iOS's `Info.plist`:
 <string>For video recording</string>
 ```
 
+## FAQ
+
+Why I cannot see the camera?
+
+For native platforms, the plugin puts the native camera view behind the webview and sets the webview as transparent so that we can display HTML elements above the camera.
+
+You may need to add the style below on your app's HTML or body element to avoid blocking the camera view:
+
+```css
+ion-content {
+  --background: transparent;
+}
+```
+
 ## API
 
 <docgen-index>
