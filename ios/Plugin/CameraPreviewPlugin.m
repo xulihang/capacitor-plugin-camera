@@ -14,6 +14,7 @@ CAP_PLUGIN(CameraPreviewPlugin, "CameraPreview",
            CAP_PLUGIN_METHOD(setScanRegion, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setZoom, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setFocus, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(setLayout, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(saveFrame, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(startCamera, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(stopCamera, CAPPluginReturnPromise);

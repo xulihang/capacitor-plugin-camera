@@ -336,6 +336,37 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
         call.resolve()
     }
     
+    @objc func setLayout(_ call: CAPPluginCall) {
+        if (self.previewView == nil){
+            call.reject("not initialized")
+        }else{
+            DispatchQueue.main.async {
+                let left = self.getLayoutValue(call.getString("left")!,true)
+                let top = self.getLayoutValue(call.getString("top")!,false)
+                let width = self.getLayoutValue(call.getString("width")!,true)
+                let height = self.getLayoutValue(call.getString("height")!,false)
+                self.previewView.frame = CGRect.init(x: left, y: top, width: width, height: height)
+            }
+            call.resolve()
+        }
+    }
+    
+    func getLayoutValue(_ value: String,_ isWidth: Bool) -> CGFloat {
+       if value.contains("%") {
+           let percent = CGFloat(Float(String(value[..<value.lastIndex(of: "%")!]))!/100)
+           if isWidth {
+               return percent * (self.bridge?.webView!.frame.width)!
+           }else{
+               return percent * (self.bridge?.webView!.frame.height)!
+           }
+       }
+       if value.contains("px") {
+           let num = CGFloat(Float(String(value[..<value.lastIndex(of: "p")!]))!)
+           return num
+       }
+       return CGFloat(Float(value)!)
+   }
+
     func captureDevice(with position: AVCaptureDevice.Position) -> AVCaptureDevice? {
 
         let devices = AVCaptureDevice.DiscoverySession(deviceTypes: [ .builtInWideAngleCamera, .builtInMicrophone, .builtInDualCamera, .builtInTelephotoCamera ], mediaType: AVMediaType.video, position: .unspecified).devices
