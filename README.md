@@ -39,6 +39,26 @@ Objective-C:
 
 You have to call `saveFrame` beforehand.
 
+## Declare Permissions
+
+To use camera and microphone, we need to declare permissions.
+
+Add the following to Android's `AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+```
+
+Add the following to iOS's `Info.plist`:
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>For camera usage</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>For video recording</string>
+```
+
 ## API
 
 <docgen-index>
