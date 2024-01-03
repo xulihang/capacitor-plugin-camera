@@ -59,7 +59,7 @@ async function initialize(){
   } catch (error) {
     console.log(error);
   }
-  await CameraPreview.setScanRegion({region:{top:20,left:10,right:90,bottom:60,measuredByPercentage:1}});
+  
   await loadCameras();
   loadResolutions();
   startBtn.innerText = "Start Camera";
@@ -84,10 +84,17 @@ async function updateViewfinder(res){
   let viewFinder = document.querySelector("view-finder");
   viewFinder.width = width;
   viewFinder.height = height;
-  viewFinder.left = width * 0.1;
-  viewFinder.top = height * 0.2;
-  viewFinder.right = width * 0.9;
-  viewFinder.bottom = height * 0.6;
+  if (document.getElementById("scanRegion").checked) {
+    viewFinder.left = width * 0.1;
+    viewFinder.top = height * 0.2;
+    viewFinder.right = width * 0.9;
+    viewFinder.bottom = height * 0.6;
+  }else{
+    viewFinder.left = 0;
+    viewFinder.top = 0;
+    viewFinder.right = width;
+    viewFinder.bottom = height;
+  }
 }
 
 async function updateOverlay(res){
@@ -108,6 +115,11 @@ async function updateOverlay(res){
 }
 
 async function startCamera(){
+  if (document.getElementById("scanRegion").checked) {
+    await CameraPreview.setScanRegion({region:{top:20,left:10,right:90,bottom:60,measuredByPercentage:1}});
+  }else{
+    await CameraPreview.setScanRegion({region:{top:0,left:0,right:100,bottom:100,measuredByPercentage:1}});
+  }
   await CameraPreview.startCamera();
   toggleControlsDisplay(true);
 }
