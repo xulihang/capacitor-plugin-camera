@@ -31,7 +31,7 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
         DispatchQueue.main.sync {
             self.previewView = PreviewView.init(frame: (bridge?.viewController?.view.bounds)!)
             self.webView!.superview!.insertSubview(self.previewView, belowSubview: self.webView!)
-            initializeCaptureSession()
+            initializeCaptureSession(enableVideoRecording: false)
         }
         call.resolve()
     }
@@ -65,17 +65,19 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
         call.resolve()
     }
     
-    func initializeCaptureSession(){
+    func initializeCaptureSession(enableVideoRecording:Bool){
         // Create the capture session.
         self.captureSession = AVCaptureSession()
 
         // Find the default audio device.
         guard let videoDevice = AVCaptureDevice.default(for: .video) else { return }
-        let microphone = AVCaptureDevice.default(for: AVMediaType.audio)
-        if microphone != nil {
-            let micInput = try? AVCaptureDeviceInput(device: microphone!)
-            if captureSession.canAddInput(micInput!) {
-                captureSession.addInput(micInput!)
+        if enableVideoRecording {
+            let microphone = AVCaptureDevice.default(for: AVMediaType.audio)
+            if microphone != nil {
+                let micInput = try? AVCaptureDeviceInput(device: microphone!)
+                if captureSession.canAddInput(micInput!) {
+                    captureSession.addInput(micInput!)
+                }
             }
         }
        
@@ -99,10 +101,11 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
                 if self.captureSession.canAddOutput(self.photoOutput) {
                     self.captureSession.addOutput(photoOutput)
                 }
-                
-                self.movieFileOutput = AVCaptureMovieFileOutput()
-                if self.captureSession.canAddOutput(self.movieFileOutput) {
-                    self.captureSession.addOutput(movieFileOutput)
+                if enableVideoRecording {
+                    self.movieFileOutput = AVCaptureMovieFileOutput()
+                    if self.captureSession.canAddOutput(self.movieFileOutput) {
+                        self.captureSession.addOutput(movieFileOutput)
+                    }
                 }
                 
                 self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
@@ -115,6 +118,7 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
             
         } catch {
             // Configuration failed. Handle error.
+            print(error)
         }
     }
     func takePhotoWithAVFoundation(){
@@ -383,7 +387,16 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
    }
     
     @objc func startRecording(_ call: CAPPluginCall) {
-        self.movieFileOutput!.startRecording(to: self.getTemp(), recordingDelegate: self)
+        DispatchQueue.main.sync {
+            if self.captureSession != nil {
+                if self.captureSession.isRunning {
+                    self.captureSession.stopRunning()
+                    self.initializeCaptureSession(enableVideoRecording: true)
+                    self.captureSession.startRunning()
+                    self.movieFileOutput!.startRecording(to: self.getTemp(), recordingDelegate: self)
+                }
+            }
+        }
         call.resolve()
     }
     
@@ -394,6 +407,12 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
             if self.stopRecordingCall.getBool("includeBase64", false) {
                 let data = try? Data(contentsOf: outputFileURL)
                 ret["base64"] = data?.base64EncodedString()
+            }
+            if self.captureSession != nil {
+                if self.captureSession.isRunning {
+                    self.captureSession.stopRunning()
+                    self.initializeCaptureSession(enableVideoRecording: false)
+                }
             }
             self.stopRecordingCall.resolve(ret)
             self.stopRecordingCall = nil
