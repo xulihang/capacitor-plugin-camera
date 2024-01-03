@@ -2,6 +2,8 @@
 
 A capacitor camera plugin.
 
+[Online demo](https://dazzling-cactus-692f14.netlify.app/)
+
 ## Supported Platforms
 
 * Android (based on CameraX)
