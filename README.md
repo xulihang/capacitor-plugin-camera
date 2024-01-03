@@ -61,7 +61,7 @@ You have to call `saveFrame` beforehand.
 * [`toggleTorch(...)`](#toggletorch)
 * [`getOrientation()`](#getorientation)
 * [`startRecording()`](#startrecording)
-* [`stopRecording()`](#stoprecording)
+* [`stopRecording(...)`](#stoprecording)
 * [`requestCameraPermission()`](#requestcamerapermission)
 * [`requestMicroPhonePermission()`](#requestmicrophonepermission)
 * [`isOpen()`](#isopen)
@@ -328,13 +328,17 @@ startRecording() => Promise<void>
 --------------------
 
 
-### stopRecording()
+### stopRecording(...)
 
 ```typescript
-stopRecording() => Promise<{ blob: Blob; }>
+stopRecording(options: { includeBase64?: boolean; }) => Promise<{ path?: string; base64?: string; blob?: Blob; }>
 ```
 
-**Returns:** <code>Promise&lt;{ blob: any; }&gt;</code>
+| Param         | Type                                      |
+| ------------- | ----------------------------------------- |
+| **`options`** | <code>{ includeBase64?: boolean; }</code> |
+
+**Returns:** <code>Promise&lt;{ path?: string; base64?: string; blob?: any; }&gt;</code>
 
 --------------------
 
