@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -375,6 +376,56 @@ public class CameraPreviewPlugin extends Plugin {
         });
     }
 
+    @PluginMethod
+    public void setLayout(PluginCall call){
+        if (previewView != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    if (call.hasOption("width") && call.hasOption("height") && call.hasOption("left") && call.hasOption("top")) {
+                        try{
+                            double width = getLayoutValue(call.getString("width"),true);
+                            double height = getLayoutValue(call.getString("height"),false);
+                            double left = getLayoutValue(call.getString("left"),true);
+                            double top = getLayoutValue(call.getString("top"),false);
+                            previewView.setX((int) left);
+                            previewView.setY((int) top);
+                            ViewGroup.LayoutParams cameraPreviewParams = previewView.getLayoutParams();
+                            cameraPreviewParams.width = (int) width;
+                            cameraPreviewParams.height = (int) height;
+                            previewView.setLayoutParams(cameraPreviewParams);
+                        }catch(Exception e) {
+                            Log.d("Camera",e.getMessage());
+                        }
+                    }
+                    call.resolve();
+                }
+            });
+        }else{
+            call.reject("Camera not initialized");
+        }
+    }
+    private double getLayoutValue(String value,boolean isWidth) {
+        if (value.indexOf("%") != -1) {
+            double percent = Double.parseDouble(value.substring(0,value.length()-1))/100;
+            if (isWidth) {
+                return percent * Resources.getSystem().getDisplayMetrics().widthPixels;
+            }else{
+                return percent * Resources.getSystem().getDisplayMetrics().heightPixels;
+            }
+        }
+        if (value.indexOf("px") != -1) {
+            return Double.parseDouble(value.substring(0,value.length()-2));
+        }
+        try {
+            return Double.parseDouble(value);
+        }catch(Exception e) {
+            if (isWidth) {
+                return Resources.getSystem().getDisplayMetrics().widthPixels;
+            }else{
+                return Resources.getSystem().getDisplayMetrics().heightPixels;
+            }
+        }
+    }
     private void triggerOnPlayed() {
         try {
             JSObject onPlayedResult = new JSObject();

@@ -40,6 +40,7 @@ export interface CameraPreviewPlugin {
   getOrientation(): Promise<{"orientation":"PORTRAIT"|"LANDSCAPE"}>;
   startRecording(): Promise<void>;
   stopRecording(options:{includeBase64?:boolean}): Promise<{path?:string,base64?:string,blob?:Blob}>;
+  setLayout(options: {top: string, left:string, width:string, height:string}): Promise<void>;
   requestCameraPermission(): Promise<void>;
   requestMicroPhonePermission(): Promise<void>;
   isOpen():Promise<{isOpen:boolean}>;

@@ -62,6 +62,7 @@ You have to call `saveFrame` beforehand.
 * [`getOrientation()`](#getorientation)
 * [`startRecording()`](#startrecording)
 * [`stopRecording(...)`](#stoprecording)
+* [`setLayout(...)`](#setlayout)
 * [`requestCameraPermission()`](#requestcamerapermission)
 * [`requestMicroPhonePermission()`](#requestmicrophonepermission)
 * [`isOpen()`](#isopen)
@@ -339,6 +340,19 @@ stopRecording(options: { includeBase64?: boolean; }) => Promise<{ path?: string;
 | **`options`** | <code>{ includeBase64?: boolean; }</code> |
 
 **Returns:** <code>Promise&lt;{ path?: string; base64?: string; blob?: any; }&gt;</code>
+
+--------------------
+
+
+### setLayout(...)
+
+```typescript
+setLayout(options: { top: string; left: string; width: string; height: string; }) => Promise<void>
+```
+
+| Param         | Type                                                                       |
+| ------------- | -------------------------------------------------------------------------- |
+| **`options`** | <code>{ top: string; left: string; width: string; height: string; }</code> |
 
 --------------------
 

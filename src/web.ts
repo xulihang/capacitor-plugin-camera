@@ -387,4 +387,25 @@ export class CameraPreviewWeb extends WebPlugin implements CameraPreviewPlugin {
       }
     })    
   }
+
+  async setLayout(options: {top: string,left:string,width:string, height:string}): Promise<void> {
+    if (this.camera) {
+      let ele = this.camera.getUIElement();
+      if (options.top) {
+        ele.style.top = options.top;
+      }
+      if (options.left) {
+        ele.style.left = options.left;
+      }
+      if (options.width) {
+        ele.style.width = options.width;
+      }
+      if (options.height) {
+        ele.style.height = options.height;
+      }
+      ele.style.position = "absolute";
+    }else{
+      throw new Error("Camera not initialized");
+    }
+  }
 }
