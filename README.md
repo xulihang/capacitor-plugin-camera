@@ -425,7 +425,7 @@ isOpen() => Promise<{ isOpen: boolean; }>
 ### addListener('onPlayed', ...)
 
 ```typescript
-addListener(eventName: 'onPlayed', listenerFunc: onPlayedListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'onPlayed', listenerFunc: onPlayedListener) => Promise<PluginListenerHandle>
 ```
 
 | Param              | Type                                                          |
@@ -433,7 +433,7 @@ addListener(eventName: 'onPlayed', listenerFunc: onPlayedListener) => Promise<Pl
 | **`eventName`**    | <code>'onPlayed'</code>                                       |
 | **`listenerFunc`** | <code><a href="#onplayedlistener">onPlayedListener</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 --------------------
 
@@ -441,7 +441,7 @@ addListener(eventName: 'onPlayed', listenerFunc: onPlayedListener) => Promise<Pl
 ### addListener('onOrientationChanged', ...)
 
 ```typescript
-addListener(eventName: 'onOrientationChanged', listenerFunc: onOrientationChangedListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'onOrientationChanged', listenerFunc: onOrientationChangedListener) => Promise<PluginListenerHandle>
 ```
 
 | Param              | Type                                                                                  |
@@ -449,7 +449,7 @@ addListener(eventName: 'onOrientationChanged', listenerFunc: onOrientationChange
 | **`eventName`**    | <code>'onOrientationChanged'</code>                                                   |
 | **`listenerFunc`** | <code><a href="#onorientationchangedlistener">onOrientationChangedListener</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 --------------------
 
