@@ -194,7 +194,7 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
                 return
             }
             var degree = 0;
-            if UIDevice.current.orientation == UIDeviceOrientation.portrait {
+            if UIDevice.current.orientation == UIDeviceOrientation.portrait || UIDevice.current.orientation == UIDeviceOrientation.faceDown {
                 if connection.videoOrientation == AVCaptureVideoOrientation.landscapeRight || connection.videoOrientation == AVCaptureVideoOrientation.landscapeLeft  {
                     degree = 90
                 }
@@ -319,10 +319,10 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
     
     @objc func getOrientation(_ call: CAPPluginCall) {
         var ret = PluginCallResultData()
-        if UIDevice.current.orientation.isPortrait {
-            ret["orientation"] = "PORTRAIT"
-        }else{
+        if UIDevice.current.orientation.isLandscape {
             ret["orientation"] = "LANDSCAPE"
+        }else {
+            ret["orientation"] = "PORTRAIT"
         }
         call.resolve(ret)
     }
