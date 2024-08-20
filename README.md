@@ -10,6 +10,12 @@ A capacitor camera plugin.
 * iOS (based on AVCaptureSession)
 * Web (based on getUserMedia with Dynamsoft Camera Enhancer)
 
+## Versions
+
+For Capacitor 5, use versions 1.x.
+
+For Capacitor 6, use versions 2.x.
+
 ## Install
 
 ```bash
