@@ -47,11 +47,11 @@ export interface CameraPreviewPlugin {
   addListener(
     eventName: 'onPlayed',
     listenerFunc: onPlayedListener,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
   addListener(
     eventName: 'onOrientationChanged',
     listenerFunc: onOrientationChangedListener,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
   removeAllListeners(): Promise<void>;
 }
 
