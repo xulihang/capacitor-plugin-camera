@@ -79,6 +79,12 @@ ion-content {
 }
 ```
 
+In dark mode, it is neccessary to set the `--ion-blackground-color` property. You can do this with the following code:
+
+```js
+document.documentElement.style.setProperty('--ion-background-color', 'transparent');
+```
+
 ## API
 
 <docgen-index>
