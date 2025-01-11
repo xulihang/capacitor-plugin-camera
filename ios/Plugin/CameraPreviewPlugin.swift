@@ -95,6 +95,13 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
                     self.captureSession.addOutput(videoOutput)
                 }
                 
+                let interfaceOrientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
+                if (interfaceOrientation == .landscapeLeft) {
+                    self.previewView.videoPreviewLayer.connection?.videoOrientation = .landscapeLeft
+                } else if (interfaceOrientation == .landscapeRight) {
+                    self.previewView.videoPreviewLayer.connection?.videoOrientation = .landscapeRight
+                }
+                
                 self.photoOutput = AVCapturePhotoOutput()
                 self.photoOutput.isHighResolutionCaptureEnabled = true
                 //self.photoOutput.
