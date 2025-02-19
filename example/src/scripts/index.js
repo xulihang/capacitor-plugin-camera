@@ -1,4 +1,3 @@
-import '../styles/index.scss';
 import { CameraPreview } from "capacitor-plugin-camera";
 import { Capacitor } from '@capacitor/core';
 
