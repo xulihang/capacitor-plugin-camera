@@ -25,6 +25,7 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
     var facingBack = true
     var videoInput:AVCaptureDeviceInput!
     var scanRegion:ScanRegion! = nil
+    var lastValidOrientation = "portrait"
     @objc func initialize(_ call: CAPPluginCall) {
         // Initialize a camera view for previewing video.
         NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -42,10 +43,13 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
             self.previewView.frame = bounds!
             if UIDevice.current.orientation == UIDeviceOrientation.portrait {
                 self.previewView.videoPreviewLayer.connection?.videoOrientation = .portrait
+                lastValidOrientation = "portrait"
             }else if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 self.previewView.videoPreviewLayer.connection?.videoOrientation = .landscapeRight
+                lastValidOrientation = "landscapeRight"
             }else if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
                 self.previewView.videoPreviewLayer.connection?.videoOrientation = .landscapeLeft
+                lastValidOrientation = "landscapeLeft"
             }
         }
         notifyListeners("onOrientationChanged",data: nil)
@@ -201,14 +205,13 @@ public class CameraPreviewPlugin: CAPPlugin, AVCaptureVideoDataOutputSampleBuffe
                 return
             }
             var degree = 0;
-            if UIDevice.current.orientation == UIDeviceOrientation.portrait || UIDevice.current.orientation == UIDeviceOrientation.faceDown {
-                if connection.videoOrientation == AVCaptureVideoOrientation.landscapeRight || connection.videoOrientation == AVCaptureVideoOrientation.landscapeLeft  {
-                    degree = 90
-                }
-            }else if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
+            if lastValidOrientation == "portrait" {
+                degree = 90
+            }else if lastValidOrientation == "landscapeLeft" {
                 degree = 180
             }
-            
+            //print("lastValidOrientation: ",lastValidOrientation)
+            //print("degree: ",degree)
             let image = UIImage(cgImage: cgImage)
             let rotated = rotatedUIImage(image: image, degree: degree)
             var normalized = normalizedImage(rotated)
