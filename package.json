@@ -10,8 +10,11 @@
     "android/src/main/",
     "android/build.gradle",
     "dist/",
-    "ios/Plugin/",
-    "CapacitorPluginCamera.podspec"
+    "ios/Sources",
+    "ios/Tests",
+    "Package.swift",
+    "CapacitorPluginCamera.podspec",
+    "LICENSE"
   ],
   "author": "Lihang Xu",
   "license": "MIT",
@@ -38,7 +41,7 @@
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
-    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
+    "verify:ios": "xcodebuild -scheme CapacitorPluginCamera -destination generic/platform=iOS",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
@@ -63,7 +66,7 @@
     "@types/recordrtc": "^5.6.14",
     "eslint": "^8.57.0",
     "prettier": "^3.4.2",
-    "prettier-plugin-java": "^2.6.6",
+    "prettier-plugin-java": "^2.6.7",
     "rimraf": "^6.0.1",
     "rollup": "^4.30.1",
     "swiftlint": "^2.0.0",

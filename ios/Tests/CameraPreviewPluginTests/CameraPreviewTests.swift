@@ -1,5 +1,5 @@
 import XCTest
-@testable import Plugin
+@testable import CameraPreviewPlugin
 
 class CameraPreviewTests: XCTestCase {
     override func setUp() {
